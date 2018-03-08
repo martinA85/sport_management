@@ -11,7 +11,7 @@ class SportCredit(models.Model):
     date_valid = fields.Datetime()
     number = fields.Integer()
     total = fields.Float(compute='_compute_total')
-    quotation_ids = fields.One2many('sale.order')
+    quotation_ids = fields.One2many('sale.order', 'credit_id')
     status = fields.Selection([
         ('valid', 'Valid'),
         ('invalid', 'Invalid'),
