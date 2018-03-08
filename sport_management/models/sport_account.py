@@ -8,7 +8,7 @@ class SportAccount(models.Model):
     name = fields.Char(string='Name')
     client_id = fields.Many2one('res.partner')
     date_create = fields.Datetime(string = 'Creation date', default=fields.Datetime.now)
-    credit_ids = fields.One2many('sport.credit', 'account_id', string="account's credit list")
+    credit_ids = fields.One2many('sport.credit', string="account's credit list")
 
 
     def _add_credit(self):

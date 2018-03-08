@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 
-
+#credit model, use to keep history of credit on the account
 class SportCredit(models.Model):
     _name = 'sport.credit'
     _description = 'New Description'
