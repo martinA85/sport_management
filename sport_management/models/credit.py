@@ -7,6 +7,7 @@ class SportCredit(models.Model):
 
     name = fields.Char(string='Name')
     type_id = fields.Many2one('sport.type_course')
+    account_id = fields.Many2one('sport.account')
     date_valid = fields.Datetime()
     number = fields.Integer()
     total = fields.Float(compute='_compute_total')
