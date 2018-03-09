@@ -27,6 +27,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/sport_type_course_view.xml',
+        'views/sport_account_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

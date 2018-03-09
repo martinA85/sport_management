@@ -17,11 +17,22 @@ class SportCredit(models.Model):
         ('invalid', 'Invalid'),
     ], string="Credit status", default="valid")
 
+    
     @api.depends('number', 'type_id')
     def _compute_total(self):
         for credit in self:
-            self.total = self.number * self.type_id.price
+            credit.total = credit.number * credit.type_id.price
 
     @api.depends('status')
     def _set_invalid(self):
-        self.status = "invalid"
+        for credit in self:
+            credit.status = "invalid"
+
+
+    @api.depends('status')
+    def _toogle_validity(self):
+        for credit in self:
+            if credit.status == "invalid":
+                credit.status = "valid"
+            else:
+                credit.status = "invalid"
