@@ -28,6 +28,8 @@
         'views/templates.xml',
         'views/sport_type_course_view.xml',
         'views/sport_account_view.xml',
+        'views/sport_credit_view.xml',
+        'data/cron.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

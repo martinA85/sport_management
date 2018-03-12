@@ -7,3 +7,5 @@ class TypeCourse(models.Model):
 
     name = fields.Char(string='Name')
     price = fields.Float(string='Course price')
+    product_id = fields.Many2one(comodel_name='product.template', string='Product for quotation', required=False)
+    
