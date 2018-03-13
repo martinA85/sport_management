@@ -26,12 +26,5 @@
                 </form>
             </field>
         </record>
-
-        <record model="ir.actions.act_window" id="action_card_list">
-            <field name="name">Cards</field>
-            <field name="res_model">sport.sport_card</field>
-            <field name="context">{'search_default_credit_id': [active_id], 'default_card_ids': active_id}</field>
-            <field name="view_mode">tree,form</field>
-        </record>
     </data>
 </odoo>

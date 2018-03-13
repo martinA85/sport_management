@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <!-- sport.card seach view -->
+        <record id="sport_card_view_search" model="ir.ui.view">
+            <field name="name">sport.card.view.search</field>
+            <field name="model">sport.sport_card</field>
+            <field name="arch" type="xml">
+                <search string="Search cards">
+                    <field name="account_id" operator="=" />
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

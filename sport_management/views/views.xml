@@ -21,16 +21,30 @@
     <record model="ir.actions.act_window" id="action_credit_list">
        <field name="name">Credits</field>
         <field name="res_model">sport.credit</field>
-        <field name="context">{'search_default_credit_id': [active_id], 'default_credit_ids': active_id}</field>
+        <field name="context">{'search_default_account_id': [active_id]}</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <record model="ir.actions.act_window" id="action_quotation_list">
        <field name="name">Sale order</field>
         <field name="res_model">sale.order</field>
-        <field name="context">{'search_default_quotation_id': [active_id], 'default_quotation_ids': active_id}</field>
+        <field name="context">{'search_default_credit_id': [active_id]}</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <record model="ir.actions.act_window" id="action_card_list">
+        <field name="name">Cards</field>
+        <field name="res_model">sport.sport_card</field>
+        <field name="context">{'search_default_account_id': [active_id]}</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+      <record model="ir.actions.act_window" id="action_partner_credit_list">
+        <field name="name">Credits</field>
+        <field name="res_model">sport.credit</field>
+        <field name="context">{'search_default_client_id': [active_id]}</field>
+        <field name="view_mode">tree,form</field>
+      </record>
 
     <menuitem id="sport_management_menu" name="Sport" />
 

@@ -30,6 +30,9 @@
         'views/sport_account_view.xml',
         'views/sport_credit_view.xml',
         'data/cron.xml',
+        'views/res_partner_view.xml',
+        'views/sport_card_view.xml',
+        'views/sale_order_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

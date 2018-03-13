@@ -1,4 +1,7 @@
 from odoo import api, fields, models
+import logging
+#Get the logger
+_logger = logging.getLogger(__name__)
 
 class SportAccount(models.Model):
     _name = 'sport.account'
@@ -11,7 +14,7 @@ class SportAccount(models.Model):
     credit_count = fields.Integer(compute="_compute_credit_count")
     card_count = fields.Integer(compute="_compute_card_count")
     active = fields.Boolean(default=True)
-    owner_id = fields.Many2one(comodel_name='res.partner', string='Account owner', required=False)
+    partner_id = fields.Many2one(comodel_name='res.partner', string='Account owner', required=False)
     
 
     def _add_credit(self):

@@ -11,7 +11,7 @@ class SportCredit(models.Model):
     name = fields.Char(string='Name')
     client_id = fields.Many2one('res.partner')
     type_id = fields.Many2one('sport.type_course')
-    account_id = fields.Many2one('sport.credit')
+    account_id = fields.Many2one('sport.account')
     date_valid = fields.Datetime()
     number_actual = fields.Integer(String="Remaining credit")
     total = fields.Float(compute='_compute_total')

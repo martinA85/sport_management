@@ -31,5 +31,16 @@
             </field>
         </record>
 
+
+        <record id="sport_credit_view_search" model="ir.ui.view">
+            <field name="name">sport.credit.view.search</field>
+            <field name="model">sport.credit</field>
+            <field name="arch" type="xml">
+                <search string="Search cards">
+                    <field name="account_id" operator="=" />
+                    <field name="client_id" operator="=" />
+                </search>
+            </field>
+        </record>
     </data>
 </odoo>
