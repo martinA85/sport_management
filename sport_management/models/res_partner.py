@@ -21,6 +21,7 @@ class ResPartner(models.Model):
                 _logger.info(card.credit_count)
                 partner.credit_count += card.credit_count
 
+    
     @api.depends('card_ids')
     def _compute_card_count(self):
         for partner in self:

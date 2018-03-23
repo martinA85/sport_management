@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale'],
+    'depends': ['base', 'sale', 'website'],
 
     # always loaded
     'data': [
@@ -33,6 +33,10 @@
         'views/res_partner_view.xml',
         'views/sport_card_view.xml',
         'views/sale_order_view.xml',
+        'views/sport_session_view.xml',
+        'views/sport_subscription_view.xml',
+        'views/web_template.xml',
+        # 'views/sport_course_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

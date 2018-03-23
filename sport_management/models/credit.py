@@ -1,9 +1,9 @@
 from odoo import api, fields, models
 from datetime import datetime
 import logging
-#credit model, use to keep history of credit on the credit
-_logger = logging.getLogger(__name__)
 
+_logger = logging.getLogger(__name__)
+#credit model, use to keep history of credit on the credit
 class SportCredit(models.Model):
     _name = 'sport.credit'
     _description = 'New Description'

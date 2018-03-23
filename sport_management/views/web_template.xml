@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+
+        <template id="sport_calendar_view" name="sport calendar view" customize_show="True">
+            <t t-call="website.layout">
+                <t t-set="title">Sessions calendar</t>
+                <link rel='stylesheet' href='/sport_management/static/css/fullcalendar.css' />
+                <script src="/sport_management/static/js/moment.min.js"></script>
+                <script src="/sport_management/static/js/fullcalendar.js"></script>
+                <script type="module" src="/sport_management/static/js/calendar.js"></script>
+                <div class="oe_structure">
+                    <h1>CALENDAR</h1>
+
+                    <div>
+                        
+                        <div id="calendar"></div>
+                        
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

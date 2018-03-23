@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="sport_card_view_search" model="ir.ui.view">
+            <field name="name">sport.card.view.search</field>
+            <field name="model">sport.subscription</field>
+            <field name="arch" type="xml">
+                <search string="Search cards">
+                    <field name="client_id" operator="=" />
+                    <field name="session_id" operator="=" />
+                    <field name="status" operator="=" />
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

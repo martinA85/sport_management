@@ -1,0 +1,56 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_session_calendar">
+            <field name="name">sport.session.calendar</field>
+            <field name="model">sport.session</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <calendar date_start="start_date" date_stop="end_date" string="Sport session">
+                    <field name="name"/>
+                    <field name="coach_id" />
+                    <field name="course_id" />
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_session_kanban">
+            <field name="name">sport.session.kanban</field>
+            <field name="model">sport.session</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <kanban default_group_by="course_id">
+                    <field name="name" />
+                    <field name="start_date" />
+                    <field name="coach_id" />
+                </kanban>
+            </field>
+        </record>
+
+        <!-- sport.session form view -->
+        <record id="sport_session_view_form" model="ir.ui.view">
+            <field name="name">sport.session.view.form</field>
+            <field name="model">sport.session</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="%(action_session_v_list)d" type="action" icon="fa-user-circle">
+                                <field string="Subscribers" name="attendee_count" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" name="%(action_session_w_list)d" type="action" icon="fa-pause">
+                                <field string="Waiting" name="waiting_attendee_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="name"/>
+                            <field name="course_id" />
+                            <field name="start_date" />
+                            <field name="end_date" />
+                            <field name="coach_id" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
