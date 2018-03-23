@@ -3,11 +3,11 @@ window.onload = init;
 function init(){
 
     console.log("init Calendar.js");
-    json_test_function();
+    calendar_printer();
 }
 
 
-function json_test_function(){
+function calendar_printer(){
 
     odoo.define("sport.my_js", function(require) { 'use strict';
 
@@ -26,7 +26,7 @@ function json_test_function(){
             for(var i=0;i<json_len;i++){
                 var start = new Date(data[i].start_date);
                 var end = new Date(data[i].end_date);
-                var session = '{"title":"'+ data[i].name +'","start":"'+start+'","end":"'+end+'","allDay":false,"color":"red"},';
+                var session = '{"title":"'+ data[i].name +'","start":"'+start+'","end":"'+end+'","allDay":false,"color":"'+data[i].color+'"},';
                 sessions += session;
             }
             sessions = sessions.substring(0, sessions.length -1)
@@ -35,6 +35,9 @@ function json_test_function(){
 
             $('#calendar').fullCalendar({
                 height : 650,
+                themeSystem: 'bootstrap4',
+                weekNumbers : true,
+                locale: 'fr',
                 header:{
                     left:'prev,today,next',
                     center:'title',

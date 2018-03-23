@@ -108,6 +108,7 @@
         <field name="context">{'search_default_session_id': [active_id], 'search_default_status':'waiting'}</field>
         <field name="view_mode">tree,form</field>
       </record>
+      
     <!-- menu item -->
 
     <menuitem id="sport_management_menu" name="Sport" />

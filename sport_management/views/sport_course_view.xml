@@ -12,7 +12,7 @@
                             <field name="lenght" />
                             <field name="max_attendee" />
                             <field name="course_type_id" />
-                            <field name="color" widget="color" />
+                            <field name="color" />
                         </group>
                     </sheet>
                 </form>

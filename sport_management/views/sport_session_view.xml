@@ -47,6 +47,7 @@
                             <field name="start_date" />
                             <field name="end_date" />
                             <field name="coach_id" />
+                            <field name="color" />
                         </group>
                     </sheet>
                 </form>

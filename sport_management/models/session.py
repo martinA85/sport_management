@@ -18,6 +18,7 @@ class Session(models.Model):
     waiting_attendee_count = fields.Integer(String="Waiting attendee count", compute="_compute_waiting_attendee_count")
     status = fields.Selection(string='status', required=False, selection=[('done', 'Done'), ('cancel', 'Canceled'), ('valid','Valid')], default="valid")
     day = fields.Char(String="Days", compute="_compute_session_day")
+    color = fields.Char(compute="_compute_color")
     
 
     @api.depends('subscription_ids')
@@ -45,3 +46,8 @@ class Session(models.Model):
 
     def search_all_session(self):
         return self.env['sport.session'].search([('status','like','valid')])
+
+    @api.depends("course_id")
+    def _compute_color(self):
+        for session in self:
+            session.color = session.course_id.color

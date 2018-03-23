@@ -9,3 +9,4 @@ class Course(models.Model):
     lenght = fields.Char(String="cours lenght (HH:MM)")
     max_attendee = fields.Integer(String="Maximum attendee number")
     course_type_id = fields.Many2one('sport.type_course', string="Course Type")
+    color = fields.Char(string="red, green, blue, yellow ...")
