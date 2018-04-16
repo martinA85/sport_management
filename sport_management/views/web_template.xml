@@ -4,19 +4,51 @@
         <template id="sport_calendar_view" name="sport calendar view" customize_show="True">
             <t t-call="website.layout">
                 <t t-set="title">Sessions calendar</t>
-                <link rel='stylesheet' href='/sport_management/static/css/fullcalendar.css' />
+                <!--JQUERYUI-->
+                <link rel='stylesheet' href='/sport_management/static/js/jquery-ui-dialog/jquery-ui.min.css'/>
+                <script src="/sport_management/static/js/jquery-ui-dialog/jquery-ui.min.js"></script>
+                <!--/JQUERYUI-->
+                <link rel='stylesheet' href='/sport_management/static/css/fullcalendar.css'/>
                 <script src="/sport_management/static/js/moment.min.js"></script>
                 <script src="/sport_management/static/js/fullcalendar.js"></script>
                 <script type="module" src="/sport_management/static/js/calendar.js"></script>
                 <div class="oe_structure">
+                    <div class="ui-widget">
+                        <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                            <strong>Alert:</strong> <span id="alert-msg"></span></p>
+                        </div>
+                    </div>
+                    <div class="ui-widget">
+                        <div class="ui--priority-primary ui-corner-all" style="padding: 0 .7em;">
+                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                            <strong>info:</strong> <span id="info-msg"></span></p>
+                        </div>
+                    </div>
                     <h1>CALENDAR</h1>
 
                     <div>
                         <!-- div used to create the calendar (with fullcalendar library) -->
                         <div id="calendar"></div>
                     </div>
+                    <div id="dialog-confirm" title="Subscription" style="display:none;">
+                        <p>
+                            <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+                            <span id="dialog-msg"></span>
+                        </p>
+                        <br />
+                        <div id="selected-course"></div>
+                    </div>
                 </div>
             </t>
+        </template>
+
+        <template id="sport_subscribe_session_view" name="sport subscribe session" customize_show="True">
+            <div class="oe_structure">
+                <t t-name="SubscriptionSession">
+                    <div>test</div>
+                </t>
+            </div>
         </template>
 
     </data>

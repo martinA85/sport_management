@@ -8,4 +8,5 @@ class TypeCourse(models.Model):
     name = fields.Char(string='Name')
     price = fields.Float(string='Course price')
     product_id = fields.Many2one(comodel_name='product.template', string='Product for quotation', required=False)
-    
+    course_ids = fields.One2many('sport.course','course_type_id')
+    session_ids = fields.Many2many('sport.session', 'course', 'session_ids')
