@@ -9,6 +9,7 @@ class ResPartner(models.Model):
 
     credit_ids = fields.One2many('sport.credit', 'client_id')
     card_ids = fields.One2many('sport.sport_card','client_id')
+    sub_ids = fields.One2many('sport.subscription','client_id')
     credit_count = fields.Integer(compute="_compute_credit_count")
     card_count = fields.Integer(compute="_compute_card_cout")
 

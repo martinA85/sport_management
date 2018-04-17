@@ -99,7 +99,7 @@
             <field name="name">valid subs</field>
             <field name="res_model">sport.subscription</field>
             <field name="context">{'search_default_session_id': [active_id], 'search_default_status':'valid'}</field>
-            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_mode">tree,form</field>
         </record>
 
         <record model="ir.actions.act_window" id="action_session_w_list">

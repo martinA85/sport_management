@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-import logging, pdfcrowd, json
+import logging, json
 from datetime import datetime, timedelta
 
 _logger = logging.getLogger(__name__)
