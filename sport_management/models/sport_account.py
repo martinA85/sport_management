@@ -22,8 +22,10 @@ class SportAccount(models.Model):
 
     def remove_credit(self):
         for account in self:
+            _logger.info("remove_credit")
             account.credit_ids.sorted(key=lambda c:c.date_valid)
             account.credit_ids[0].number_actual -= 1
+            _logger.info(account.credit_ids[0].number_actual)
 
 
     @api.depends('credit_ids')

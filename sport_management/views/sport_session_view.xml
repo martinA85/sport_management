@@ -6,7 +6,6 @@
             <field eval="1" name="priority"/>
             <field name="arch" type="xml">
                 <calendar date_start="start_date" date_stop="end_date" string="Sport session">
-                    <!--<button name="print_calendar" string="Print calendar" type="object" class="oe_highlight"/>-->
                     <field name="name"/>
                     <field name="coach_id"/>
                     <field name="course_id"/>
@@ -14,7 +13,18 @@
             </field>
         </record>
 
-        <!--<record model="ir.ui.view" id="view_session_kanban">-->
+        <!-- sport.session seach view -->
+        <record id="sport_card_view_search" model="ir.ui.view">
+            <field name="name">sport.card.view.search</field>
+            <field name="model">sport.sport_card</field>
+            <field name="arch" type="xml">
+                <search string="Search cards">
+                    <field name="account_id" operator="=" />
+                </search>
+            </field>
+        </record>
+
+        <!-- <record model="ir.ui.view" id="view_session_kanban">-->
             <!--<field name="name">sport.session.kanban</field>-->
             <!--<field name="model">sport.type_course</field>-->
             <!--<field eval="2" name="priority"/>-->
@@ -46,7 +56,7 @@
                     <!--</kanban>-->
                 <!--</field>-->
             <!--</field>-->
-        <!--</record>-->
+        <!--</record> -->
 
 
         <!-- sport.session form view -->

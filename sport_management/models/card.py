@@ -1,5 +1,8 @@
 from odoo import api, fields, models
+from datetime import datetime, timedelta
+import logging
 
+_logger = logging.getLogger(__name__)
 
 class SportCard(models.Model):
     _name = 'sport.sport_card'
@@ -21,3 +24,29 @@ class SportCard(models.Model):
 
     def _scan_card(self):
         pass
+
+    def scan_card(self):
+        message = ""
+        for card in self:
+            client = card.client_id
+            now = datetime.now()
+            hour = now + timedelta(hours=1)
+            lst_subscriptions = client.sub_ids
+
+            for sub in lst_subscriptions:
+                date = datetime.strptime(sub.session_id.start_date, '%Y-%m-%d %H:%M:%S')
+
+                _logger.info(date <= hour)
+                if date >= now and date <= hour:
+                    if card.credit_count > 0:
+                        card.account_id.remove_credit()
+                        message = "presence valider"
+                    else:
+                        message = "plus de session" 
+                else:
+                    message = "aucune session proche"
+
+            _logger.info(message)
+            return message
+                
+                
