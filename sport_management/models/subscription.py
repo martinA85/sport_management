@@ -15,7 +15,7 @@ class Subscription(models.Model):
         ('canceled', 'Canceled'),
         ('waiting', 'Wainting'),
         ('absent', 'Absent'),
-    ], string="Credit status", default="valid")
+    ], string="Credit status")
 
     def set_present(self):
         for sub in self:

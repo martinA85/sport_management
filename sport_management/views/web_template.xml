@@ -13,17 +13,19 @@
                 <script src="/sport_management/static/js/fullcalendar.js"></script>
                 <script type="module" src="/sport_management/static/js/calendar.js"></script>
                 <div class="oe_structure">
-                    <div class="ui-widget">
-                        <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                            <strong>Alert:</strong> <span id="alert-msg"></span></p>
-                        </div>
+                    <div class="alert alert-danger" role="alert" style="display:none;">
+                        <strong>Alert:</strong>
+                        <span id="alert-msg"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&amp;times</span>
+                        </button>
                     </div>
-                    <div class="ui-widget">
-                        <div class="ui--priority-primary ui-corner-all" style="padding: 0 .7em;">
-                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                            <strong>info:</strong> <span id="info-msg"></span></p>
-                        </div>
+                    <div class="alert alert-success" role="alert" style="display:none;">
+                        <strong>info:</strong>
+                        <span id="info-msg"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&amp;times</span>
+                        </button>
                     </div>
                     <h1>CALENDAR</h1>
 
@@ -36,7 +38,7 @@
                             <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
                             <span id="dialog-msg"></span>
                         </p>
-                        <br />
+                        <br/>
                         <div id="selected-course"></div>
                     </div>
                 </div>

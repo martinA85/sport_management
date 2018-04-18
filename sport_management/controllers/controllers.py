@@ -5,6 +5,7 @@ from datetime import datetime
 import logging
 import json
 from pprint import pprint
+
 _logger = logging.getLogger(__name__)
 
 
@@ -26,8 +27,8 @@ class SportController(http.Controller):
         subscription = request.env['sport.subscription']
 
         subscription_ids = subscription.search([
-            ['session_id','=',web_session_id],
-            ['client_id','=',web_client_id]
+            ['session_id', '=', web_session_id],
+            ['client_id', '=', web_client_id]
         ])
         print(subscription_ids.session_id.id)
 
@@ -45,10 +46,15 @@ class SportController(http.Controller):
         # Get models
         subscription = request.env['sport.subscription']
         session = request.env['sport.session']
+        client = request.env['res.partner']
+
+        client_id = client.search([
+            ('id', '=', web_client_id)
+        ])
 
         # Search all subscription of web_client_id
         subscription_ids = subscription.search([
-            ['client_id', '=', web_client_id]
+            ('client_id', '=', client_id.id)
         ])
 
         # Search session of web_session_id
@@ -56,7 +62,69 @@ class SportController(http.Controller):
             ['id', '=', web_session_id]
         ])
 
+        course_max_attendee = session_id.course_id.max_attendee
+        session_subscriptions = session_id.attendee_count
+        waiting_list = True
 
+        # Check if the max attendee is full
+        if course_max_attendee > session_subscriptions:
+            waiting_list = False
+
+        subscribed = self.already_subscribed(subscription_ids, session_id)
+
+        # If session is not subscribed
+        if not subscribed:
+            if self.check_sessions_schedules(subscription_ids, session_id):
+                if waiting_list:
+                    self.create_subscription(subscription, client_id, session_id, 'waiting')
+                    response['warning'].append(True)
+                    response['msg'].append(['This session is full, your subscription is registered in waiting list'])
+                else:
+                    self.create_subscription(subscription, client_id, session_id, 'sub')
+                    response['msg'].append(['Subscription registered'])
+            else:
+                response['error'] = True
+                response['msg'].append(['You already have session at this moment.'])
+        elif subscribed.status == 'canceled':
+            if self.check_sessions_schedules(subscription_ids, session_id):
+                if waiting_list:
+                    subscribed.status = 'waiting'
+                    response['warning'].append(True)
+                    response['msg'].append(['This session is full, your subscription is registered in waiting list'])
+                else:
+                    subscribed.status = 'sub'
+                    response['msg'].append(['Subscription registered'])
+            else:
+                response['error'] = True
+                response['msg'].append(['You already have session at this moment.'])
+        else:
+            update_waiting_list = True if subscribed.status == 'sub' else False
+
+            # Change status of subscription to 'canceled'
+            subscribed.status = 'canceled'
+
+            # Update waiting list if subscription status was 'sub'
+            if update_waiting_list:
+                # Get the first record subscription in waiting list
+                first_in_waiting_list = subscription.search([
+                    ('session_id.id', '=', session_id.id),
+                    ('status', '=', 'waiting')
+                ],
+                    order='sub_date asc',
+                    limit=1
+                )
+
+                # If recovered record is available, status change to valid
+                if first_in_waiting_list.id:
+                    first_in_waiting_list.status = 'sub'
+
+            response['msg'].append(['Unsubscription registered'])
+
+        return response
+
+    # check if session is already subscribed
+    def already_subscribed(self, subscription_ids, session_id):
+        subscribed = False
         # for each subscriptions of web_client_id
         for subscription_id in subscription_ids:
 
@@ -65,41 +133,54 @@ class SportController(http.Controller):
                 continue
 
             # If session is already subscribed, subscribed get the session subscription
-            if subscription_id.session_id.id == web_session_id:
+            if subscription_id.session_id.id == session_id.id:
                 subscribed = subscription_id
-            else:
-                # Format string to date
-                session_start_date = datetime.strptime(session_id.start_date, '%Y-%m-%d %H:%M:%S')
-                session_end_date = datetime.strptime(session_id.end_date, '%Y-%m-%d %H:%M:%S')
-                sub_session_start_date = datetime.strptime(subscription_id.session_id.start_date, '%Y-%m-%d %H:%M:%S')
-                sub_session_end_date = datetime.strptime(subscription_id.session_id.end_date, '%Y-%m-%d %H:%M:%S')
 
-                # If sessions is not subscribed
-                # and start_date of session in subscription is between start_date and end_date of the session subscribed
-                # or end_date  of session in subscription is between start_date and end_date of the session subscribed
-                # the session can't be subscribing.
-                if (session_start_date >= sub_session_start_date and
-                    session_start_date <= sub_session_end_date) or \
-                        (session_end_date >= sub_session_start_date and
-                         session_end_date <= sub_session_end_date):
-                    response['error'] = True
-                    response['msg'].append(['You already have session at this moment.'])
+        return subscribed
 
-        # If there is not error
-        if not response['error']:
+    # Check if the period of session requested is free
+    def check_sessions_schedules(self, subscription_ids, session_requested):
+        response = True
+        i = 0
+        for subscription_id in subscription_ids:
+            compared_session = subscription_id.session_id
 
-            # If session is not subscribed
-            if not subscribed:
-                subscription.sudo().create({
-                    'name': 'SportController.subscribe.create',
-                    'client_id': web_client_id,
-                    'session_id': web_session_id,
-                    'sub_date': '01/01/2018 00:00:00',
-                    'status': 'valid'
-                })
-                response['msg'].append(['Subscription registered'])
-            else:
-                subscribed.sudo().unlink()
-                response['msg'].append(['Unsubscription registered'])
+            # Go to the next loop if subscription is empty
+            if not subscription_id.session_id.id:
+                continue
 
+            # Format string to date
+            session_start_date = datetime.strptime(session_requested.start_date, '%Y-%m-%d %H:%M:%S')
+            session_end_date = datetime.strptime(session_requested.end_date, '%Y-%m-%d %H:%M:%S')
+            sub_session_start_date = datetime.strptime(compared_session.start_date, '%Y-%m-%d %H:%M:%S')
+            sub_session_end_date = datetime.strptime(compared_session.end_date, '%Y-%m-%d %H:%M:%S')
+
+            print('subscription_id.status.before-test : ')
+            print(subscription_id.status)
+            print('subscription_id.client_id.name : ')
+            print(subscription_id.client_id.name)
+            print('subscription_id.name : ')
+            print(subscription_id.name)
+
+            # Check the availability of the schedule
+            if session_start_date <= sub_session_end_date and \
+                    session_end_date >= sub_session_start_date and \
+                    subscription_id.status != 'canceled':
+                response = False
+
+            i = i + 1
+
+        print('iteration : ' + str(i))
+        print('response : ')
+        print(response)
         return response
+
+    # create a subscription
+    def create_subscription(self, subscription, client, session, status):
+        subscription.sudo().create({
+            'name': client.name,
+            'client_id': client.id,
+            'session_id': session.id,
+            'sub_date': datetime.now(),
+            'status': status
+        })

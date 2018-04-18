@@ -27,7 +27,7 @@ class Session(models.Model):
         for session in self:
             session.attendee_count = 0
             for sub in session.subscription_ids:
-                if sub.status == 'valid':
+                if sub.status == 'sub':
                     session.attendee_count += 1
 
     @api.depends('subscription_ids')
@@ -76,7 +76,9 @@ class Session(models.Model):
             subscriptions = []
             for subscription in session.subscription_ids:
                 subscriptions.append({"id": subscription.id,
-                                      "client_id": subscription.client_id.id
+                                      "client_id": subscription.client_id.id,
+                                      "sub_date": subscription.sub_date,
+                                      "status": subscription.status
                                       })
 
             sessions.append({"id": session.id,
@@ -89,3 +91,10 @@ class Session(models.Model):
                              })
 
         return json.dumps(sessions)
+
+    @api.onchange('attendee_count')
+    def _send_mail_on_unsubscribe(self):
+        for session in self:
+            if session.attendee_count < session.course_id.max_attendee:
+                if session.waiting_attendee_count > 0:
+                    # waiting_attendee_list = session.subscription_ids.
