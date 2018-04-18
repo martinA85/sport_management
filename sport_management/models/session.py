@@ -74,7 +74,7 @@ class Session(models.Model):
         sessions = []
         for session in self.search([]):
             subscriptions = []
-            for subscription in session.subscription_ids:
+            for subscription in session.subscription_ids:   
                 subscriptions.append({"id": subscription.id,
                                       "client_id": subscription.client_id.id,
                                       "sub_date": subscription.sub_date,
@@ -97,4 +97,5 @@ class Session(models.Model):
         for session in self:
             if session.attendee_count < session.course_id.max_attendee:
                 if session.waiting_attendee_count > 0:
+                    pass
                     # waiting_attendee_list = session.subscription_ids.

@@ -184,3 +184,33 @@ class SportController(http.Controller):
             'sub_date': datetime.now(),
             'status': status
         })
+
+
+    # controller that render the client courses list
+    # return a view
+    @http.route('/my/courses', auth='public', website=True, type="http")
+    def client_web_interface(self, **kw):
+
+        env = request.env
+        partner = request.env.user.partner_id
+        client = env['res.partner']
+        subscription = env['sport.subscription']
+
+        now = datetime.now()
+
+        subscription_ids = subscription.search([
+            ('client_id', '=', partner.id),
+        ])
+        
+        _logger.info(subscription_ids)
+
+        for subscription in subscription_ids:
+            sub_date = subscription.session_id.start_date
+            sub_date = datetime.strptime(sub_date, '%Y-%m-%d %H:%M:%S')
+            _logger.info("date : " + str(sub_date))
+
+        values = {
+            'subscriptions':subscription_ids,
+        }
+        
+        return http.request.render('sport_management.client_courses', values)
