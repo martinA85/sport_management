@@ -15,14 +15,21 @@
                 <div class="oe_structure">
                     <div class="alert alert-danger" role="alert" style="display:none;">
                         <strong>Alert:</strong>
-                        <span id="alert-msg"></span>
+                        <span id="danger-msg"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&amp;times</span>
+                        </button>
+                    </div>
+                    <div class="alert alert-warning" role="alert" style="display:none;">
+                        <strong>Alert:</strong>
+                        <span id="warning-msg"></span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&amp;times</span>
                         </button>
                     </div>
                     <div class="alert alert-success" role="alert" style="display:none;">
                         <strong>info:</strong>
-                        <span id="info-msg"></span>
+                        <span id="success-msg"></span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&amp;times</span>
                         </button>

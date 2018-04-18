@@ -94,7 +94,16 @@ class Session(models.Model):
 
     @api.onchange('attendee_count')
     def _send_mail_on_unsubscribe(self):
+        print('_send_mail_on_unsubscribe.START')
         for session in self:
+            print('_send_mail_on_unsubscribe.FOR')
             if session.attendee_count < session.course_id.max_attendee:
+                print('_send_mail_on_unsubscribe.IF1')
                 if session.waiting_attendee_count > 0:
-                    # waiting_attendee_list = session.subscription_ids.
+                    print('_send_mail_on_unsubscribe.IF2')
+                    waiting_attendee_list = session.subscription_ids.search([
+                        ('status', '=', 'waiting')
+                    ],
+                        order='sub_date asc'
+                    )
+                    print(waiting_attendee_list)
