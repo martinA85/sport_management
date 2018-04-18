@@ -10,14 +10,14 @@ function calendar_printer() {
     if (sessionStorage.getItem('alert')) {
         var data = JSON.parse(sessionStorage.getItem('data'));
         if (data.error) {
-            $('#alert-msg').html(data.msg);
-            $('#alert-msg').parent().closest('div').css('display', 'block');
+            $('#danger-msg').html(data.msg);
+            $('#danger-msg').parent().closest('div').css('display', 'block');
         } else if (data.warning) {
             $('#warning-msg').html(data.msg);
             $('#warning-msg').parent().closest('div').css('display', 'block');
         } else {
-            $('#info-msg').html(data.msg);
-            $('#info-msg').parent().closest('div').css('display', 'block');
+            $('#success-msg').html(data.msg);
+            $('#success-msg').parent().closest('div').css('display', 'block');
         }
         sessionStorage.clear();
     }
@@ -136,8 +136,8 @@ function calendar_printer() {
                             }
                         });
                     } else {
-                        $('#alert-msg').html(event.msg);
-                        $('#alert-msg').parent().closest('div').css('display', 'block');
+                        $('#danger-msg').html(event.msg);
+                        $('#danger-msg').parent().closest('div').css('display', 'block');
                     }
                 }
             });

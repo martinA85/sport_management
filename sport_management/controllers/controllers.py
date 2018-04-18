@@ -41,7 +41,7 @@ class SportController(http.Controller):
         web_client_id = int(kw.get('user_id'))
         web_session_id = int(kw.get('session_id'))
         subscribed = False
-        response = {'error': False, 'msg': []}
+        response = {'error': False, 'warning': False, 'msg': []}
 
         # Get models
         subscription = request.env['sport.subscription']
@@ -77,7 +77,7 @@ class SportController(http.Controller):
             if self.check_sessions_schedules(subscription_ids, session_id):
                 if waiting_list:
                     self.create_subscription(subscription, client_id, session_id, 'waiting')
-                    response['warning'].append(True)
+                    response['warning'] = True
                     response['msg'].append(['This session is full, your subscription is registered in waiting list'])
                 else:
                     self.create_subscription(subscription, client_id, session_id, 'sub')
@@ -89,7 +89,7 @@ class SportController(http.Controller):
             if self.check_sessions_schedules(subscription_ids, session_id):
                 if waiting_list:
                     subscribed.status = 'waiting'
-                    response['warning'].append(True)
+                    response['warning'] = True
                     response['msg'].append(['This session is full, your subscription is registered in waiting list'])
                 else:
                     subscribed.status = 'sub'
@@ -141,7 +141,7 @@ class SportController(http.Controller):
     # Check if the period of session requested is free
     def check_sessions_schedules(self, subscription_ids, session_requested):
         response = True
-        i = 0
+
         for subscription_id in subscription_ids:
             compared_session = subscription_id.session_id
 
@@ -155,24 +155,12 @@ class SportController(http.Controller):
             sub_session_start_date = datetime.strptime(compared_session.start_date, '%Y-%m-%d %H:%M:%S')
             sub_session_end_date = datetime.strptime(compared_session.end_date, '%Y-%m-%d %H:%M:%S')
 
-            print('subscription_id.status.before-test : ')
-            print(subscription_id.status)
-            print('subscription_id.client_id.name : ')
-            print(subscription_id.client_id.name)
-            print('subscription_id.name : ')
-            print(subscription_id.name)
-
             # Check the availability of the schedule
             if session_start_date <= sub_session_end_date and \
                     session_end_date >= sub_session_start_date and \
                     subscription_id.status != 'canceled':
                 response = False
 
-            i = i + 1
-
-        print('iteration : ' + str(i))
-        print('response : ')
-        print(response)
         return response
 
     # create a subscription
