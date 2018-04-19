@@ -85,38 +85,38 @@ class SportController(http.Controller):
             else:
                 response['error'] = True
                 response['msg'].append(['You already have session at this moment.'])
-        elif subscribed.status == 'canceled':
+        elif subscribed.state == 'canceled':
             if self.check_sessions_schedules(subscription_ids, session_id):
                 if waiting_list:
-                    subscribed.status = 'waiting'
+                    subscribed.state = 'waiting'
                     response['warning'] = True
                     response['msg'].append(['This session is full, your subscription is registered in waiting list'])
                 else:
-                    subscribed.status = 'sub'
+                    subscribed.state = 'sub'
                     response['msg'].append(['Subscription registered'])
             else:
                 response['error'] = True
                 response['msg'].append(['You already have session at this moment.'])
         else:
-            update_waiting_list = True if subscribed.status == 'sub' else False
+            update_waiting_list = True if subscribed.state == 'sub' else False
 
-            # Change status of subscription to 'canceled'
-            subscribed.status = 'canceled'
+            # Change state of subscription to 'canceled'
+            subscribed.state = 'canceled'
 
-            # Update waiting list if subscription status was 'sub'
+            # Update waiting list if subscription state was 'sub'
             if update_waiting_list:
                 # Get the first record subscription in waiting list
                 first_in_waiting_list = subscription.search([
                     ('session_id.id', '=', session_id.id),
-                    ('status', '=', 'waiting')
+                    ('state', '=', 'waiting')
                 ],
                     order='sub_date asc',
                     limit=1
                 )
 
-                # If recovered record is available, status change to valid
+                # If recovered record is available, state change to valid
                 if first_in_waiting_list.id:
-                    first_in_waiting_list.status = 'sub'
+                    first_in_waiting_list.state = 'sub'
 
             response['msg'].append(['Unsubscription registered'])
 
@@ -158,17 +158,17 @@ class SportController(http.Controller):
             # Check the availability of the schedule
             if session_start_date <= sub_session_end_date and \
                     session_end_date >= sub_session_start_date and \
-                    subscription_id.status != 'canceled':
+                    subscription_id.state != 'canceled':
                 response = False
 
         return response
 
     # create a subscription
-    def create_subscription(self, subscription, client, session, status):
+    def create_subscription(self, subscription, client, session, state):
         subscription.sudo().create({
             'name': client.name,
             'client_id': client.id,
             'session_id': session.id,
             'sub_date': datetime.now(),
-            'status': status
+            'state': state
         })

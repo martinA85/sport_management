@@ -98,14 +98,14 @@
         <record model="ir.actions.act_window" id="action_session_v_list">
             <field name="name">attendee subs</field>
             <field name="res_model">sport.subscription</field>
-            <field name="context">{'search_default_session_id': [active_id], 'search_default_status':'sub'}</field>
+            <field name="context">{'search_default_session_id': [active_id], 'search_default_state':'sub'}</field>
             <field name="view_mode">tree,form</field>
         </record>
 
         <record model="ir.actions.act_window" id="action_session_w_list">
             <field name="name">valid subs</field>
             <field name="res_model">sport.subscription</field>
-            <field name="context">{'search_default_session_id': [active_id], 'search_default_status':'waiting'}</field>
+            <field name="context">{'search_default_session_id': [active_id], 'search_default_state':'waiting'}</field>
             <field name="view_mode">tree,form</field>
         </record>
 

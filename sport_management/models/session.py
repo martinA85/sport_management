@@ -17,7 +17,7 @@ class Session(models.Model):
     attendee_count = fields.Integer(String="Attendee number", compute="_compute_attendee_count")
     subscription_ids = fields.One2many('sport.subscription', 'session_id')
     waiting_attendee_count = fields.Integer(String="Waiting attendee count", compute="_compute_waiting_attendee_count")
-    status = fields.Selection(string='status', required=False,
+    state = fields.Selection(string='state', required=False,
                               selection=[('done', 'Done'), ('cancel', 'Canceled'), ('valid', 'Valid')], default="valid")
     day = fields.Char(String="Days", compute="_compute_session_day")
     color = fields.Char(compute="_compute_color")
@@ -25,9 +25,10 @@ class Session(models.Model):
     @api.depends('subscription_ids')
     def _compute_attendee_count(self):
         for session in self:
+            prev_count = session.attendee_count
             session.attendee_count = 0
             for sub in session.subscription_ids:
-                if sub.status == 'sub':
+                if sub.state == 'sub':
                     session.attendee_count += 1
 
     @api.depends('subscription_ids')
@@ -36,7 +37,7 @@ class Session(models.Model):
         for session in self:
             session.attendee_count = 0
             for sub in session.subscription_ids:
-                if sub.status == 'waiting':
+                if sub.state == 'waiting':
                     session.waiting_attendee_count += 1
 
     @api.onchange('start_date')
@@ -46,7 +47,7 @@ class Session(models.Model):
                 date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
 
     def search_all_session(self):
-        return self.env['sport.session'].search([('status', 'like', 'valid')])
+        return self.env['sport.session'].search([('state', 'like', 'valid')])
 
     @api.depends("course_id")
     def _compute_color(self):
@@ -57,8 +58,8 @@ class Session(models.Model):
     @api.onchange('start_date')
     def _compute_end_date(self):
         for session in self:
-            if session.course_id.lenght:
-                length = datetime.strptime(session.course_id.lenght, '%H:%M').time()
+            if session.course_id.length:
+                length = datetime.strptime(session.course_id.length, '%H:%M').time()
                 date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
                 session.end_date = date + timedelta(hours=length.hour, seconds=length.second)
 
@@ -68,7 +69,6 @@ class Session(models.Model):
         print('Print pdf')
 
     # Returns a json contains all needed sessions data's to build web calendar.
-    # @api.returns('sport.session')
     @api.model
     def search_session_and_subscription(self):
         sessions = []
@@ -78,11 +78,13 @@ class Session(models.Model):
                 subscriptions.append({"id": subscription.id,
                                       "client_id": subscription.client_id.id,
                                       "sub_date": subscription.sub_date,
-                                      "status": subscription.status
+                                      "state": subscription.state
                                       })
 
             sessions.append({"id": session.id,
                              "title": session.name,
+                             "course_id": session.course_id.id,
+                             "course_name": session.course_id.name,
                              "start": session.start_date,
                              "end": session.end_date,
                              "color": session.color,
@@ -91,19 +93,3 @@ class Session(models.Model):
                              })
 
         return json.dumps(sessions)
-
-    @api.onchange('attendee_count')
-    def _send_mail_on_unsubscribe(self):
-        print('_send_mail_on_unsubscribe.START')
-        for session in self:
-            print('_send_mail_on_unsubscribe.FOR')
-            if session.attendee_count < session.course_id.max_attendee:
-                print('_send_mail_on_unsubscribe.IF1')
-                if session.waiting_attendee_count > 0:
-                    print('_send_mail_on_unsubscribe.IF2')
-                    waiting_attendee_list = session.subscription_ids.search([
-                        ('status', '=', 'waiting')
-                    ],
-                        order='sub_date asc'
-                    )
-                    print(waiting_attendee_list)

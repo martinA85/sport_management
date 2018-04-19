@@ -9,8 +9,11 @@
                 <script src="/sport_management/static/js/jquery-ui-dialog/jquery-ui.min.js"></script>
                 <!--/JQUERYUI-->
                 <link rel='stylesheet' href='/sport_management/static/css/fullcalendar.css'/>
+                <link rel='stylesheet'
+                      href='/sport_management/static/js/clockpicker-gh-pages/dist/bootstrap-clockpicker.min.css'/>
                 <script src="/sport_management/static/js/moment.min.js"></script>
                 <script src="/sport_management/static/js/fullcalendar.js"></script>
+                <script src="/sport_management/static/js/clockpicker-gh-pages/dist/bootstrap-clockpicker.min.js"></script>
                 <script type="module" src="/sport_management/static/js/calendar.js"></script>
                 <div class="oe_structure">
                     <div class="alert alert-danger" role="alert" style="display:none;">
@@ -35,6 +38,19 @@
                         </button>
                     </div>
                     <h1>CALENDAR</h1>
+                    <form class="form-inline">
+                        <div class="form-row align-items-center">
+                            <div class="col-auto my-1">
+                                <label class="mr-sm-2" for="slt_course">Preference</label>
+                                <select class="custom-select mr-sm-2" id="slt_course">
+                                    <option>Choose course</option>
+                                </select>
+                            </div>
+                            <div class="col-auto my-1">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
 
                     <div>
                         <!-- div used to create the calendar (with fullcalendar library) -->
@@ -49,6 +65,9 @@
                         <div id="selected-course"></div>
                     </div>
                 </div>
+                <script type="text/javascript">
+                    $('.clockpicker').clockpicker();
+                </script>
             </t>
         </template>
 

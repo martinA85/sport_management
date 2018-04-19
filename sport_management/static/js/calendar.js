@@ -29,51 +29,54 @@ function calendar_printer() {
         var weContext = require('web_editor.context');
         var ajax = require('web.ajax');
         var usession = require('web.session');
+        var course_ids = [];
+        var sessions = [];
+        var session_ids = [];
 
-
-        // we are loading our sessions with odoo rpc api
+        // we are loading all courses with odoo rpc api
         rpc.query({
-            model: 'sport.session',
+            model: 'sport.course',
             // method: 'search_read',
-            method: 'search_session_and_subscription',
+            method: 'search_courses',
             context: weContext.get(),
         }).then(function (data) {
-
-            var sessions = [];
-            // ou session are in data, we are parsing them to use them in our calendar
-            JSON.parse(data).forEach(function (session) {
-                session.subscriptions.forEach(function (subscription) {
-                    if (subscription.client_id == usession.user_id) {
-                        switch (subscription.status) {
-                            case 'sub':
-                                session.color = '#35b0c6';
-                                session['status'] = 'sub';
-                                session['msg'] = 'Are you sure you want to <b>unsubscribe</b> for this course ?';
-                                break;
-                            case 'valid':
-                                session.color = 'green';
-                                session['status'] = 'valid';
-                                session['msg'] = 'This session has passed. You can\'t you unsubscribe.';
-                                break;
-                            case 'canceled':
-                                session.color = 'gray';
-                                session['status'] = 'canceled';
-                                session['msg'] = 'Are you sure you want to <b>subscribe</b> for this course ?';
-                                break;
-                            case 'waiting':
-                                session.color = 'orange';
-                                session['status'] = 'waiting';
-                                session['msg'] = 'Are you sure you want to <b>unsubscribe</b> for this course ?';
-                                break;
-                            case 'absent':
-                                session.color = 'red';
-                                session['status'] = 'absent';
-                                session['msg'] = 'This session has passed. You can\'t you unsubscribe.';
-                                break;
+            JSON.parse(data).forEach(function (course_id) {
+                $('#slt_course').append('<option value="' + course_id.id + '">' + course_id.name + '</option>');
+                course_id.session_ids.forEach(function (session_id) {
+                    session_id.subscription_ids.forEach(function (subscription_id) {
+                        if (subscription_id.client_id == usession.user_id) {
+                            switch (subscription_id.state) {
+                                case 'sub':
+                                    session_id.color = '#35b0c6';
+                                    session_id['state'] = 'sub';
+                                    session_id['msg'] = 'Are you sure you want to <b>unsubscribe</b> for this course ?';
+                                    break;
+                                case 'valid':
+                                    session_id.color = 'green';
+                                    session_id['state'] = 'valid';
+                                    session_id['msg'] = 'This session has passed. You can\'t you unsubscribe.';
+                                    break;
+                                case 'canceled':
+                                    session_id.color = 'gray';
+                                    session_id['state'] = 'canceled';
+                                    session_id['msg'] = 'Are you sure you want to <b>subscribe</b> for this course ?';
+                                    break;
+                                case 'waiting':
+                                    session_id.color = 'orange';
+                                    session_id['state'] = 'waiting';
+                                    session_id['msg'] = 'Are you sure you want to <b>unsubscribe</b> for this course ?';
+                                    break;
+                                case 'absent':
+                                    session_id.color = 'red';
+                                    session_id['state'] = 'absent';
+                                    session_id['msg'] = 'This session has passed. You can\'t you unsubscribe.';
+                                    break;
+                            }
                         }
-                    }
+                    });
+                    session_ids.push(session_id);
                 });
-                sessions.push(session);
+                course_ids.push(course_id);
             });
 
             // init calendar
@@ -88,7 +91,7 @@ function calendar_printer() {
                     right: 'years,month,agendaWeek,agendaDay,listWeek'
                 },
                 editable: false,
-                events: sessions,
+                events: session_ids,
                 timeFormat: 'HH:mm',
                 eventClick: function (event) {
 
@@ -101,11 +104,12 @@ function calendar_printer() {
                     var msg = event.msg ? event.msg : 'Are you sure you want to <b>subscribe</b> for this course ?';
 
                     // Exit function if event is outdated
-                    if (Date.now() > event.start){
+                    if (Date.now() > event.start) {
                         return;
                     }
 
-                    if (event.status != 'absent' | event.status != 'valid') {
+                    if (event.state != 'absent' | event.state != 'valid') {
+                        console.log('test');
                         // Add message in dialog box.
                         $('#dialog-msg').html(msg);
                         $('#selected-course').html(

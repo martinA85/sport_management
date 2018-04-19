@@ -5,11 +5,75 @@
             <field name="model">sport.subscription</field>
             <field name="arch" type="xml">
                 <search string="Search cards">
-                    <field name="client_id" operator="=" />
-                    <field name="session_id" operator="=" />
-                    <field name="status" operator="=" />
+                    <field name="client_id" operator="="/>
+                    <field name="session_id" operator="="/>
+                    <field name="state" operator="="/>
                 </search>
             </field>
         </record>
+
+        <record id="sport_subscription_view_form" model="ir.ui.view">
+            <field name="name">sport.subscription.view.form</field>
+            <field name="model">sport.subscription</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <header>
+                            <button string="Subscribe"
+                                    type="object"
+                                    name="subscribe"
+                                    attrs="{'invisible': [
+                                            ('state', '=', 'sub'),
+                                            ('state', '=', 'valid'),
+                                            ('state', '=', 'absent')
+                                        ]}"
+                            />
+                            <button string="Valid subscription"
+                                    type="object"
+                                    name="valid"
+                                    attrs="{'invisible': [
+                                            ('state', '=', 'valid'),
+                                            ('state', '=', 'waiting'),
+                                            ('state', '=', 'canceled'),
+                                            ('state', '=', 'absent')
+                                        ]}"
+                            />
+                            <button string="Cancel subscription"
+                                    type="object"
+                                    name="cancel"
+                                    attrs="{'invisible': [
+                                            ('state', '=', 'canceled'),
+                                            ('state', '=', 'valid'),
+                                            ('state', '=', 'absent')
+                                        ]}"
+                            />
+                            <field name="state" widget="statusbar"/>
+                        </header>
+                        <group>
+                            <field name="name"/>
+                            <field name="client_id"/>
+                            <field name="session_id"/>
+                            <field name="sub_date"/>
+                            <field name="state"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--<record model="workflow" id="sport.wkf_subscription">-->
+        <!--<field name="name">sport.subscription.wkf</field>-->
+        <!--<field name="osv">sport.subscription</field>-->
+        <!--<field name="on_create">True</field>-->
+        <!--</record>-->
+
+        <!--<record model="workflow.activity" id="sport.act_sub">-->
+        <!--<field name="wkf_id" ref="sport.wkf_subscription" />-->
+        <!--<field name="flow_start">True</field>-->
+        <!--<field name="name">Subscribed</field>-->
+        <!--&lt;!&ndash;<field name="action_id" ref="send_automatic_email"/>&ndash;&gt;-->
+        <!--<field name="kind">function</field>-->
+        <!--<field name="action">sub()</field>-->
+        <!--</record>-->
     </data>
 </odoo>
