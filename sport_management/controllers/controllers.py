@@ -181,24 +181,34 @@ class SportController(http.Controller):
 
         env = request.env
         partner = request.env.user.partner_id
-        client = env['res.partner']
         subscription = env['sport.subscription']
 
         now = datetime.now()
 
         subscription_ids = subscription.search([
-            ('client_id', '=', partner.id),
-        ])
+            ('client_id', '=', partner.id),'|',('status', '=', 'sub'),('status', '=', 'valid'),])
         
         _logger.info(subscription_ids)
+
+        today_list = []
+        next_list = []
+        history_list = []
 
         for subscription in subscription_ids:
             sub_date = subscription.session_id.start_date
             sub_date = datetime.strptime(sub_date, '%Y-%m-%d %H:%M:%S')
-            _logger.info("date : " + str(sub_date))
+            if sub_date >= now:
+                next_list.append(subscription)
+            if sub_date.day == now.day and sub_date.month == now.month and sub_date.year == now.year:
+                today_list.append(subscription)
+            else:
+                history_list.append(subscription)
+            
 
         values = {
-            'subscriptions':subscription_ids,
+            'today':today_list,
+            'next':next_list,
+            'past':history_list,
         }
         
         return http.request.render('sport_management.client_courses', values)

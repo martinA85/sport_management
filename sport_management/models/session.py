@@ -100,10 +100,6 @@ class Session(models.Model):
             if session.attendee_count < session.course_id.max_attendee:
                 print('_send_mail_on_unsubscribe.IF1')
                 if session.waiting_attendee_count > 0:
-<<<<<<< HEAD
-                    pass
-                    # waiting_attendee_list = session.subscription_ids.
-=======
                     print('_send_mail_on_unsubscribe.IF2')
                     waiting_attendee_list = session.subscription_ids.search([
                         ('status', '=', 'waiting')
@@ -111,4 +107,3 @@ class Session(models.Model):
                         order='sub_date asc'
                     )
                     print(waiting_attendee_list)
->>>>>>> fce7695016c919063325a648f277336d72ea01ff

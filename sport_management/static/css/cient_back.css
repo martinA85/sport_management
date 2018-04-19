@@ -6,14 +6,18 @@
     text-align: center;
     border-radius: .25rem;
     color: #fff;
-    background-color: #6c757d;
+    background-color: #518FCC;
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
-    display: inline-block;
 }
 
 .row_strip{
 
     border-left: 4px #efefef solid;
+}
+
+.blue_icone{
+
+    color: #518FCC;
 }
