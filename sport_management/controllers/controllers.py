@@ -48,9 +48,8 @@ class SportController(http.Controller):
         session = request.env['sport.session']
         client = request.env['res.partner']
 
-        client_id = client.search([
-            ('id', '=', web_client_id)
-        ])
+        #Good id client
+        client_id = request.env.user.partner_id
 
         # Search all subscription of web_client_id
         subscription_ids = subscription.search([
@@ -98,10 +97,12 @@ class SportController(http.Controller):
                 response['error'] = True
                 response['msg'].append(['You already have session at this moment.'])
         else:
+            _logger.info("Unsub")
             update_waiting_list = True if subscribed.state == 'sub' else False
 
             # Change state of subscription to 'canceled'
             subscribed.state = 'canceled'
+            _logger.info(subscribed)
 
             # Update waiting list if subscription state was 'sub'
             if update_waiting_list:
@@ -186,7 +187,7 @@ class SportController(http.Controller):
         now = datetime.now()
 
         subscription_ids = subscription.search([
-            ('client_id', '=', partner.id),'|',('status', '=', 'sub'),('status', '=', 'valid'),])
+            ('client_id', '=', partner.id),'|',('state', '=', 'sub'),('state', '=', 'valid'),])
         
         _logger.info(subscription_ids)
 
