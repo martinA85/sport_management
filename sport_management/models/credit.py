@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 #credit model, use to keep history of credit on the credit
 class SportCredit(models.Model):
     _name = 'sport.credit'
-    _description = 'New Description'
+    _description = 'Sport credit'
 
     name = fields.Char(string='Name')
     client_id = fields.Many2one('res.partner')

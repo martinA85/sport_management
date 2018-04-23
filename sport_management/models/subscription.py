@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 
 class Subscription(models.Model):
     _name = 'sport.subscription'
-    _description = 'New Description'
+    _description = 'Sport subscription'
 
     name = fields.Char(string='Name')
     client_id = fields.Many2one('res.partner')

@@ -3,7 +3,7 @@ import logging, json
 
 class Course(models.Model):
     _name = 'sport.course'
-    _description = 'New Description'
+    _description = 'Sport course'
 
     name = fields.Char(string='Name')
     length = fields.Char(String="cours length (HH:MM)")
