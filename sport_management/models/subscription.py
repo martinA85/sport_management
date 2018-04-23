@@ -16,6 +16,7 @@ class Subscription(models.Model):
         ('waiting', 'Wainting'),
         ('absent', 'Absent'),
     ], string="Subscription state", default='sub')
+    
 
     def set_present(self):
         for sub in self:
@@ -48,3 +49,4 @@ class Subscription(models.Model):
     def absent(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'absent'})
         return True
+
