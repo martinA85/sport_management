@@ -37,6 +37,7 @@
         'views/sport_subscription_view.xml',
         'views/web_template.xml',
         'views/client_interface.xml',
+        'views/sport_email_template.xml',
         # 'views/sport_course_view.xml',
     ],
     # only loaded in demonstration mode
