@@ -21,6 +21,8 @@ class Session(models.Model):
                               selection=[('done', 'Done'), ('cancel', 'Canceled'), ('valid', 'Valid')], default="valid")
     day = fields.Char(String="Days", compute="_compute_session_day")
     color = fields.Char(compute="_compute_color")
+    max_attendee = fields.Integer(String="Maximum attendee number", compute="_compute_max_attendee")
+    
 
     @api.depends('subscription_ids')
     def _compute_attendee_count(self):
@@ -93,3 +95,9 @@ class Session(models.Model):
                              })
 
         return json.dumps(sessions)
+
+
+            
+    def _compute_max_attendee(self):
+        for session in self:
+            self.max_attendee = session.course_id.max_attendee

@@ -19,6 +19,7 @@ class Subscription(models.Model):
         ('waiting', 'Waiting'),
         ('absent', 'Absent'),
     ], string="Subscription state", default='sub')
+    
 
     def set_present(self):
         for sub in self:
