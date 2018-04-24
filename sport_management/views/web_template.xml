@@ -38,7 +38,7 @@
                         </button>
                     </div>
                     <h1>CALENDAR</h1>
-                    <form method="GET" class="form-inline">
+                    <form class="form-inline">
                         <div class="form-row align-items-center">
                             <div class="col-auto my-1">
                                 <label class="mr-sm-2" for="slt_course">Preference</label>
