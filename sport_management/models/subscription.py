@@ -143,9 +143,6 @@ class Subscription(models.Model):
         # Initiate an array who will get all subscriber needing to be remind
         subscriptions_need_remind = self.get_subscription_need_remind()
 
-        _logger.info('---------------- subscriptions_need_remind ----------------')
-        _logger.info(subscriptions_need_remind)
-
         # for all subscriber who need to be remind, a email is prepared and send
         for subscription_id in subscriptions_need_remind:
 
