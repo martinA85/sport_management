@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 class Session(models.Model):
     _name = 'sport.session'
-    _description = 'New Description'
+    _description = 'Sport session'
 
     name = fields.Char(string='Name')
     course_id = fields.Many2one('sport.course', string="Course")
