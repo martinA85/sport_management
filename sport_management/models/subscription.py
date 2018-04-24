@@ -1,6 +1,6 @@
 from odoo import api, fields, models
+from datetime import datetime, timedelta
 import logging
-
 _logger = logging.getLogger(__name__)
 
 
@@ -135,3 +135,50 @@ class Subscription(models.Model):
 
         if msg_id:
             mail_pool.send([msg_id])
+
+    # function to prepare an reminder email, it call send_mail() function to create and send it
+    @api.multi
+    def email_reminder(self):
+
+        # Initiate an array who will get all subscriber needing to be remind
+        subscriptions_need_remind = self.get_subscription_need_remind()
+
+        _logger.info('---------------- subscriptions_need_remind ----------------')
+        _logger.info(subscriptions_need_remind)
+
+        # for all subscriber who need to be remind, a email is prepared and send
+        for subscription_id in subscriptions_need_remind:
+
+            subject = 'You have a session tomorrow.'
+            email_to = subscription_id.client_id.email
+            body = '<p>Dear ' + subscription_id.client_id.name + ', <br /><br />' + \
+                   'You are subscribed at the ' + subscription_id.session_id.name + \
+                   ' session at ' + subscription_id.session_id.start_date + ' for ' \
+                   + str(subscription_id.session_id.course_id.length) + '.</p>'
+
+            # call function to send the email
+            self.send_mail(subject, email_to, body)
+
+    # Returns all subscriptions who need to be reminding.
+    @api.multi
+    def get_subscription_need_remind(self):
+        # Initiate an array who will get all subscriber needing to be remind
+        subscriptions_need_remind = []
+
+        # All subscription is tested to know if they need to be remind
+        for subscription_id in self.search([]):
+
+            # Exit the first empty subscription
+            if not subscription_id.session_id.id:
+                continue
+
+            # Subtract one day to the start_date session
+            date_start = datetime.strptime(subscription_id.session_id.start_date, '%Y-%m-%d %H:%M:%S') - timedelta(days=1)
+            date_today = datetime.now()
+
+            # Compare year, month and day of date_start and current date
+            if date_start.day == date_today.day and date_start.month == date_today.month and date_start.year == date_today.year:
+                # The subscriber need to be remind, it add to the list
+                subscriptions_need_remind.append(subscription_id)
+
+        return subscriptions_need_remind
