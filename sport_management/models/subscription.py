@@ -174,7 +174,7 @@ class Subscription(models.Model):
             date_today = datetime.now()
 
             # Compare year, month and day of date_start and current date
-            if date_start.day == date_today.day and date_start.month == date_today.month and date_start.year == date_today.year:
+            if date_start.day == date_today.day and date_start.month == date_today.month and date_start.year == date_today.year and subscription_id.client_id.email:
                 # The subscriber need to be remind, it add to the list
                 subscriptions_need_remind.append(subscription_id)
 
