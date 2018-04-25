@@ -30,7 +30,7 @@ class SportCard(models.Model):
         for card in self:
             client = card.client_id
             now = datetime.now()
-            hour = now + timedelta(hours=1)
+            hour = now + timedelta(hours=24)
             lst_subscriptions = client.sub_ids
 
             for sub in lst_subscriptions:
@@ -38,15 +38,17 @@ class SportCard(models.Model):
 
                 _logger.info(date <= hour)
                 if date >= now and date <= hour:
-                    if card.credit_count > 0:
-                        card.account_id.remove_credit()
-                        message = "presence valider"
-                    else:
-                        message = "plus de session" 
+                    if sub.state == "valid":
+                        message = "presence déjà valider"
+                    else :
+                        if card.credit_count > 0:
+                            card.account_id.remove_credit()
+                            message = "presence valider"
+                            sub.state = "valid"
+                        else:
+                            message = "plus de session"
                 else:
                     message = "aucune session proche"
-
-            _logger.info(message)
             return message
                 
                 
