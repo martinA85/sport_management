@@ -1,5 +1,6 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from datetime import datetime, timedelta
+from odoo.exceptions import ValidationError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -19,7 +20,12 @@ class Subscription(models.Model):
         ('canceled', 'Canceled'),
         ('waiting', 'Waiting'),
         ('absent', 'Absent'),
-    ], string="Subscription state", default='sub')
+    ], string="Subscription state")
+
+    # A customer can't be registered twice in same session
+    _sql_constraints = [
+        ('unique_client_session', 'unique(session_id, client_id)', 'This customer already registered')
+    ]
 
     def set_present(self):
         for sub in self:
@@ -30,12 +36,24 @@ class Subscription(models.Model):
         for subscription in self:
             print(subscription.session_id.attendee_count)
 
+    @api.constrains('session_id')
+    def check_validity_subscription(self):
+        # Subtract current record
+        attendee_count = self.session_id.attendee_count - 1
+        if attendee_count >= self.session_id.max_attendee:
+            self.waiting()
+        else:
+            self.write({'state': 'sub'})
+            self.email_subscription()
+
     # function to change state of subscription
     @api.one
     def subscribe(self):
-        self.session_id.attendee_count
-        self.write({'state': 'sub'})
-        self.email_subscription()
+        if self.session_id.attendee_count >= self.session_id.max_attendee:
+            self.waiting()
+        else:
+            self.write({'state': 'sub'})
+            self.email_subscription()
 
     # function to change state of subscription
     @api.one
