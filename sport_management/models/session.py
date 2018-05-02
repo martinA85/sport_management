@@ -17,12 +17,12 @@ class Session(models.Model):
     attendee_count = fields.Integer(String="Attendee number", compute="_compute_attendee_count")
     subscription_ids = fields.One2many('sport.subscription', 'session_id')
     waiting_attendee_count = fields.Integer(String="Waiting attendee count", compute="_compute_waiting_attendee_count")
+    canceled_attendee_count = fields.Integer(String="Canceled attendee count", compute="_compute_canceled_attendee_count")
     state = fields.Selection(string='state', required=False,
                              selection=[('done', 'Done'), ('cancel', 'Canceled'), ('valid', 'Valid')], default="valid")
     day = fields.Char(String="Days", compute="_compute_session_day")
     color = fields.Char(compute="_compute_color")
     max_attendee = fields.Integer(String="Maximum attendee number", compute="_compute_max_attendee")
-
 
     @api.depends('subscription_ids')
     def _compute_attendee_count(self):
@@ -34,12 +34,19 @@ class Session(models.Model):
 
     @api.depends('subscription_ids')
     def _compute_waiting_attendee_count(self):
-        _logger.info('_compute_waiting_attendee_count')
         for session in self:
-            session.attendee_count = 0
+            session.waiting_attendee_count = 0
             for sub in session.subscription_ids:
                 if sub.state == 'waiting':
                     session.waiting_attendee_count += 1
+
+    @api.depends('subscription_ids')
+    def _compute_canceled_attendee_count(self):
+        for session in self:
+            session.canceled_attendee_count = 0
+            for sub in session.subscription_ids:
+                if sub.state == 'canceled':
+                    session.canceled_attendee_count += 1
 
     @api.onchange('start_date')
     def _compute_session_day(self):

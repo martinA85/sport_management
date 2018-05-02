@@ -10,10 +10,10 @@ class Subscription(models.Model):
     _name = 'sport.subscription'
     _description = 'Sport subscription'
 
-    name = fields.Char(string='Name')
+    name = fields.Char(string='Name', compute="_compute_set_name_client")
     client_id = fields.Many2one('res.partner')
     session_id = fields.Many2one('sport.session')
-    sub_date = fields.Datetime()
+    sub_date = fields.Datetime(default=datetime.today())
     state = fields.Selection([
         ('sub', 'Sub'),
         ('valid', 'Valid'),
@@ -27,6 +27,11 @@ class Subscription(models.Model):
         ('unique_client_session', 'unique(session_id, client_id)', 'This customer already registered')
     ]
 
+    @api.depends('client_id')
+    def _compute_set_name_client(self):
+        for subscription in self:
+            subscription.name = subscription.client_id.name
+
     def set_present(self):
         for sub in self:
             sub.state = 'valid'
@@ -39,7 +44,7 @@ class Subscription(models.Model):
     @api.constrains('session_id')
     def check_validity_subscription(self):
         # Subtract current record
-        attendee_count = self.session_id.attendee_count - 1
+        attendee_count = self.session_id.attendee_count
         if attendee_count >= self.session_id.max_attendee:
             self.waiting()
         else:
@@ -49,11 +54,7 @@ class Subscription(models.Model):
     # function to change state of subscription
     @api.one
     def subscribe(self):
-        if self.session_id.attendee_count >= self.session_id.max_attendee:
-            self.waiting()
-        else:
-            self.write({'state': 'sub'})
-            self.email_subscription()
+        self.check_validity_subscription()
 
     # function to change state of subscription
     @api.one
