@@ -22,7 +22,8 @@
                             <button string="Subscribe" type="object" name="subscribe" states="waiting,canceled"/>
                             <button string="Valid subscription" type="object" name="valid" states="sub"/>
                             <button string="Cancel subscription" type="object" name="cancel" states="sub, waiting"/>
-                            <field name="state" widget="statusbar" attrs="{'readonly':[('id','>', 0)]}"/>
+                            <button name="email_subscription" type="object" string="Create Email" class="oe_highlight"/>
+                            <field name="state" widget="statusbar"/>
                         </header>
                         <group>
                             <field name="name"/>
