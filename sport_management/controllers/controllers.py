@@ -141,7 +141,7 @@ class SportController(http.Controller):
 
     # Check if the period of session requested is free
     def check_sessions_schedules(self, subscription_ids, session_requested):
-        response = False
+        response = True
 
         for subscription_id in subscription_ids:
             compared_session = subscription_id.session_id
@@ -160,7 +160,7 @@ class SportController(http.Controller):
             if session_start_date <= sub_session_end_date and \
                     session_end_date >= sub_session_start_date and \
                     subscription_id.state != 'canceled':
-                response = True
+                response = False
 
         return response
 

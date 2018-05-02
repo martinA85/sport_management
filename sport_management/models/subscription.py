@@ -50,24 +50,10 @@ class Subscription(models.Model):
             self.write({'state': 'sub'})
             self.email_subscription()
 
-    @api.constrains('session_id')
-    def check_schedule_subscription(self):
-        subscription_ids = self.search([
-            ('id', '!=', self.id),
-            ('client_id.id', '=', self.client_id.id),
-            ('state', '=', 'sub')
-        ])
-
-        for subscription_id in subscription_ids:
-            if self.session_id.start_date <= subscription_id.session_id.end_date and \
-                    self.session_id.end_date >= subscription_id.session_id.start_date:
-                raise ValidationError(_('This customer already have session at this moment.'))
-
     # function to change state of subscription
     @api.one
     def subscribe(self):
         self.check_validity_subscription()
-        self.check_schedule_subscription()
 
     # function to change state of subscription
     @api.one

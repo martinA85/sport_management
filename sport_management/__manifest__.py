@@ -24,6 +24,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/views.xml',
         'views/templates.xml',
         'views/sport_type_course_view.xml',
@@ -37,7 +38,7 @@
         'views/sport_subscription_view.xml',
         'views/web_template.xml',
         'views/client_interface.xml',
-        #'data/module_data.xml',
+        'data/module_data.xml',
         # 'views/sport_course_view.xml',
     ],
     # only loaded in demonstration mode
