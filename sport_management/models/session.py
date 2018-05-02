@@ -17,9 +17,10 @@ class Session(models.Model):
     attendee_count = fields.Integer(String="Attendee number", compute="_compute_attendee_count")
     subscription_ids = fields.One2many('sport.subscription', 'session_id')
     waiting_attendee_count = fields.Integer(String="Waiting attendee count", compute="_compute_waiting_attendee_count")
-    canceled_attendee_count = fields.Integer(String="Canceled attendee count", compute="_compute_canceled_attendee_count")
+    canceled_attendee_count = fields.Integer(String="Canceled attendee count",
+                                             compute="_compute_canceled_attendee_count")
     state = fields.Selection(string='state', required=False,
-                              selection=[('done', 'Done'), ('cancel', 'Canceled'), ('valid', 'Valid')], default="valid")
+                             selection=[('done', 'Done'), ('cancel', 'Canceled'), ('valid', 'Valid')], default="valid")
     day = fields.Char(String="Days", compute="_compute_session_day")
     color = fields.Char(compute="_compute_color")
     max_attendee = fields.Integer(String="Maximum attendee number", compute="_compute_max_attendee")
@@ -27,7 +28,6 @@ class Session(models.Model):
     @api.depends('subscription_ids')
     def _compute_attendee_count(self):
         for session in self:
-            prev_count = session.attendee_count
             session.attendee_count = 0
             for sub in session.subscription_ids:
                 if sub.state == 'sub':
@@ -83,7 +83,7 @@ class Session(models.Model):
         sessions = []
         for session in self.search([]):
             subscriptions = []
-            for subscription in session.subscription_ids:   
+            for subscription in session.subscription_ids:
                 subscriptions.append({"id": subscription.id,
                                       "client_id": subscription.client_id.id,
                                       "sub_date": subscription.sub_date,
@@ -102,7 +102,7 @@ class Session(models.Model):
                              })
 
         return json.dumps(sessions)
-            
+
     def _compute_max_attendee(self):
         for session in self:
             self.max_attendee = session.course_id.max_attendee

@@ -1,6 +1,8 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from datetime import datetime, timedelta
+from odoo.exceptions import ValidationError
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -18,7 +20,11 @@ class Subscription(models.Model):
         ('canceled', 'Canceled'),
         ('waiting', 'Waiting'),
         ('absent', 'Absent'),
-    ], string="Subscription state", default='sub')
+    ], string="Subscription state")
+    # A customer can't be registered twice in same session
+    _sql_constraints = [
+        ('unique_client_session', 'unique(session_id, client_id)', 'This customer already registered')
+    ]
 
     @api.depends('client_id')
     def _compute_set_name_client(self):
@@ -76,59 +82,116 @@ class Subscription(models.Model):
     # function to prepare an absent email, it call send_mail() function to create and send it
     @api.multi
     def email_subscription(self):
-        subject = 'Your subscription has been registered'
-        email_to = self.client_id.email
-        body = '<p>Dear ' + self.client_id.name + ', <br /> <br />  You has been registered to the ' \
-               + self.session_id.name + ' session at ' + self.session_id.start_date + ' for ' \
-               + self.session_id.course_id.length + '.</p>'
+        subject = 'The subscription for ' + self.client_id.name + ' has been registered'
+        email_to = self.env.user.company_id.email
+        body = '<p>This customer :<br />'
+        body += self.client_id.name + '<br />'
+        if self.client_id.email:
+            body += 'Email : ' + self.client_id.email + '<br />'
+        if self.client_id.phone:
+            body += 'Phone : ' + self.client_id.phone + '<br />'
+        if self.client_id.mobile:
+            body += 'Mobile : ' + self.client_id.mobile + '<br /><br />'
+        body += 'Has been registered to the session : <br />'
+        body += self.session_id.name + '<br />'
+        body += 'At : ' + self.session_id.start_date + '<br />'
+        body += 'Hours : ' + str(self.session_id.course_id.length) + '<br /><br />'
 
         self.send_mail(subject, email_to, body)
 
     # function to prepare an absent email, it call send_mail() function to create and send it
     @api.multi
     def email_validation(self):
-        subject = 'Thank you !'
-        email_to = self.client_id.email
-        body = '<p>Dear ' + self.client_id.name + ', <br /><br />' + \
-               'You has been participated to the ' + self.session_id.name + \
-               ' session at ' + self.session_id.start_date + ' for ' \
-               + str(self.session_id.course_id.length) + '. <br /> <br />' + \
-               'Thank you for your participation and see you later !</p>'
+        subject = self.client_id.name + ' was present at the session.'
+        email_to = self.env.user.company_id.email
+        body = '<p>This customer :<br />'
+        body += self.client_id.name + '<br />'
+        if self.client_id.email:
+            body += 'Email : ' + self.client_id.email + '<br />'
+        if self.client_id.phone:
+            body += 'Phone : ' + self.client_id.phone + '<br />'
+        if self.client_id.mobile:
+            body += 'Mobile : ' + self.client_id.mobile + '<br /><br />'
+        body += 'Has been participated to the session : <br />'
+        body += self.session_id.name + '<br />'
+        body += 'At : ' + self.session_id.start_date + '<br />'
+        body += 'Hours : ' + str(self.session_id.course_id.length) + '<br /><br />'
 
         self.send_mail(subject, email_to, body)
 
     # function to prepare an absent email, it call send_mail() function to create and send it
     @api.multi
     def email_waiting(self):
-        subject = 'You has been registered in waiting list'
-        email_to = self.client_id.email
-        body = '<p>Dear ' + self.client_id.name + ', <br /><br />' + \
-               'You has been registered in waiting list to the ' + self.session_id.name + \
-               ' session at ' + self.session_id.start_date + ' for ' \
-               + str(self.session_id.course_id.length) + '. <br /> <br />' + \
-               'If a place becomes vacant, an email will be sent to inform you.</p>'
+        subject = self.client_id.name + ' has been registered in waiting list'
+        email_to = self.env.user.company_id.email
+        body = '<p>This customer :<br />'
+        body += self.client_id.name + '<br />'
+        if self.client_id.email:
+            body += 'Email : ' + self.client_id.email + '<br />'
+        if self.client_id.phone:
+            body += 'Phone : ' + self.client_id.phone + '<br />'
+        if self.client_id.mobile:
+            body += 'Mobile : ' + self.client_id.mobile + '<br /><br />'
+        body += 'Has been registered in waiting list to the session : <br />'
+        body += self.session_id.name + '<br />'
+        body += 'At : ' + self.session_id.start_date + '<br />'
+        body += 'Hours : ' + str(self.session_id.course_id.length) + '<br /><br />'
 
         self.send_mail(subject, email_to, body)
 
     # function to prepare an absent email, it call send_mail() function to create and send it
     @api.multi
     def email_cancellation(self):
-        subject = 'You has been canceled your registration'
-        email_to = self.client_id.email
-        body = '<p>Dear ' + self.client_id.name + ', <br /><br />' + \
-               'You has been canceled your registration to the ' + self.session_id.name + \
-               ' session at ' + self.session_id.start_date + ' for ' \
-               + str(self.session_id.course_id.length) + '.</p>'
+        waiting_list = '<table border="1"><thead><tr><th>Date</th><th>Customer</th><th>Phone</th><th>mobile</th></thead><tbody>'
+
+        # Get and order waiting subscriptions
+        subscriptions_waitings = self.search([('state', '=', 'waiting')], order="sub_date")
+
+        # Build waiting list
+        for subscription in subscriptions_waitings:
+            waiting_list += '<tr>'
+
+            waiting_list += '<td>' + subscription.sub_date + '</td>'
+            waiting_list += '<td>' + subscription.client_id.name + '</td>'
+
+            if subscription.client_id.phone:
+                waiting_list += '<td>' + subscription.client_id.phone + '</td>'
+            else:
+                waiting_list += '<td></td>'
+
+            if subscription.client_id.mobile:
+                waiting_list += '<td>' + subscription.client_id.mobile + '</td>'
+            else:
+                waiting_list += '<td></td>'
+
+            waiting_list += '</tr>'
+
+        waiting_list += '</tbody></table>'
+
+        subject = self.client_id.name + ' has been canceled its registration'
+        email_to = self.env.user.company_id.email
+        body = '<p>This customer :<br />'
+        body += self.client_id.name + '<br />'
+        if self.client_id.email:
+            body += 'Email : ' + self.client_id.email + '<br />'
+        if self.client_id.phone:
+            body += 'Phone : ' + self.client_id.phone + '<br />'
+        if self.client_id.mobile:
+            body += 'Mobile : ' + self.client_id.mobile + '<br /><br />'
+        body += 'Has been canceled its registration to the session : <br />'
+        body += self.session_id.name + '<br />'
+        body += 'At : ' + self.session_id.start_date + '<br />'
+        body += 'Hours : ' + str(self.session_id.course_id.length) + '<br /><br />'
+        body += waiting_list + '</p>'
 
         self.send_mail(subject, email_to, body)
 
     # function to prepare an absent email, it call send_mail() function to create and send it
     @api.multi
     def email_absent(self):
-        subject = 'You has been absent.'
-        email_to = self.client_id.email
-        body = '<p>Dear ' + self.client_id.name + ', <br /><br />' + \
-               'You were absent at the ' + self.session_id.name + \
+        subject = self.client_id.name + ' has been absent.'
+        email_to = self.env.user.company_id.email
+        body = '<p>' + self.client_id.name + ', was absent at the ' + self.session_id.name + \
                ' session at ' + self.session_id.start_date + ' for ' \
                + str(self.session_id.course_id.length) + '.</p>'
 
@@ -156,18 +219,34 @@ class Subscription(models.Model):
         # Initiate an array who will get all subscriber needing to be remind
         subscriptions_need_remind = self.get_subscription_need_remind()
 
-        # for all subscriber who need to be remind, a email is prepared and send
+        str_subs = '<table border="1"><thead><tr><th>Customer</th><th>Session</th><th>Phone</th><th>mobile</th></thead><tbody>'
+
+        # Create list string of subscriptions need to be remind
         for subscription_id in subscriptions_need_remind:
+            str_subs += '<tr>'
+            str_subs += '<td>' + subscription_id.client_id.name + '</td>'
+            str_subs += '<td>' + subscription_id.session_id.name + '</td>'
 
-            subject = 'You have a session tomorrow.'
-            email_to = subscription_id.client_id.email
-            body = '<p>Dear ' + subscription_id.client_id.name + ', <br /><br />' + \
-                   'You are subscribed at the ' + subscription_id.session_id.name + \
-                   ' session at ' + subscription_id.session_id.start_date + ' for ' \
-                   + str(subscription_id.session_id.course_id.length) + '.</p>'
+            if subscription_id.client_id.phone:
+                str_subs += '<td>' + subscription_id.client_id.phone + '</td>'
+            else:
+                str_subs += '<td></td>'
 
-            # call function to send the email
-            self.send_mail(subject, email_to, body)
+            if subscription_id.client_id.mobile:
+                str_subs += '<td>' + subscription_id.client_id.mobile + '</td>'
+            else:
+                str_subs += '<td></td>'
+
+            str_subs += '<tr>'
+        str_subs += '</tbody></table>'
+
+        subject = 'These customers have subscribed to a session tomorrow.'
+        email_to = self.env.user.company_id.email
+        body = '<p>These customers have subscribed to a session tomorrow.<br />'
+        body = body + str_subs
+
+        # call function to send the email
+        self.send_mail(subject, email_to, body)
 
     # Returns all subscriptions who need to be reminding.
     @api.multi
@@ -183,11 +262,12 @@ class Subscription(models.Model):
                 continue
 
             # Subtract one day to the start_date session
-            date_start = datetime.strptime(subscription_id.session_id.start_date, '%Y-%m-%d %H:%M:%S') - timedelta(days=1)
+            date_start = datetime.strptime(subscription_id.session_id.start_date, '%Y-%m-%d %H:%M:%S') - timedelta(
+                days=1)
             date_today = datetime.now()
 
             # Compare year, month and day of date_start and current date
-            if date_start.day == date_today.day and date_start.month == date_today.month and date_start.year == date_today.year and subscription_id.client_id.email:
+            if date_start.day == date_today.day and date_start.month == date_today.month and date_start.year == date_today.year:
                 # The subscriber need to be remind, it add to the list
                 subscriptions_need_remind.append(subscription_id)
 
