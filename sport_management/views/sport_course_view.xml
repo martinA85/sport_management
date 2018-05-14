@@ -9,6 +9,11 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <label for="len_hours" string="Durée : " />
+                            <div class="hour_picker">
+                                <field name="len_hours" style="width: 50%" placeholder="HH" />
+                                <field name="len_mins" style="width: 50%" placeholder="MM" />
+                            </div>
                             <field name="length" />
                             <field name="max_attendee" />
                             <field name="course_type_id" />

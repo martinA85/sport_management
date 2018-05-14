@@ -28,8 +28,14 @@
         'security/ir.model.access.csv',
         'security/security.xml',
 =======
+<<<<<<< HEAD:__manifest__.py
+        'data/module_data.xml',
+        'security/ir.model.access.csv',
+        'security/security.xml',
+=======
         'security/ir.model.access.csv',
 >>>>>>> ffe1665a469e80a76252f7ac2dbd52e4289f88b1:sport_management/__manifest__.py
+>>>>>>> 6047814d9fb95e8617ec12e2d971619a5e589974:sport_management/__manifest__.py
         'views/views.xml',
         'views/templates.xml',
         'views/sport_type_course_view.xml',
@@ -43,8 +49,7 @@
         'views/sport_subscription_view.xml',
         'views/web_template.xml',
         'views/client_interface.xml',
-        #'data/module_data.xml',
-        # 'views/sport_course_view.xml',
+        'views/sport_course_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

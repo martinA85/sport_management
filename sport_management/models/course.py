@@ -7,10 +7,17 @@ class Course(models.Model):
 
     name = fields.Char(string='Name')
     length = fields.Char(String="cours length (HH:MM)")
+    len_hours = fields.Char(default="00", string="Hours")
+    len_mins = fields.Char(string="Min", default='00')
     max_attendee = fields.Integer(String="Maximum attendee number")
     course_type_id = fields.Many2one('sport.type_course', string="Course Type")
     color = fields.Char(string="red, green, blue, yellow ...")
     session_ids = fields.One2many('sport.session', 'course_id')
+
+    @api.onchange('len_hours', 'len_mins')
+    def update_length(self):
+        for record in self:
+            self.length = str(self.len_hours) + ":" + str(self.len_mins)
 
     # Returns all courses
     @api.model
