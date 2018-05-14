@@ -23,7 +23,13 @@
 
     # always loaded
     'data': [
+<<<<<<< HEAD:__manifest__.py
+        'data/module_data.xml',
         'security/ir.model.access.csv',
+        'security/security.xml',
+=======
+        'security/ir.model.access.csv',
+>>>>>>> ffe1665a469e80a76252f7ac2dbd52e4289f88b1:sport_management/__manifest__.py
         'views/views.xml',
         'views/templates.xml',
         'views/sport_type_course_view.xml',
