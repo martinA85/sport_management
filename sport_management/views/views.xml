@@ -1,8 +1,5 @@
 <odoo>
     <data>
-
-        <menuitem name="Library" id="menu_root" web_icon="/sport_management/static/description/icon.png"/>
-
         <record model="ir.actions.act_window" id="action_sport_account">
             <field name="name">account</field>
             <field name="res_model">sport.account</field>
@@ -121,7 +118,7 @@
 
         <!-- menu item -->
 
-        <menuitem id="sport_management_menu" name="Sport"/>
+        <menuitem name="Sport Management" id="sport_management_menu" web_icon="/sport_management/static/description/icon.png"/>
 
         <menuitem name="Account management" id="account_management_top" parent="sport_management_menu" sequence="1"/>
 
