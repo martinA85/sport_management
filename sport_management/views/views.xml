@@ -1,7 +1,7 @@
 <odoo>
     <data>
 
-        <menuitem name="Library" id="menu_root" web_icon="library,static/description/icon.png"/>
+        <menuitem name="Library" id="menu_root" web_icon="/sport_management/static/description/icon.png"/>
 
         <record model="ir.actions.act_window" id="action_sport_account">
             <field name="name">account</field>
