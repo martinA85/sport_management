@@ -118,10 +118,9 @@
 
         <!-- menu item -->
 
-        <menuitem name="Sport Management" id="sport_management_menu" web_icon="/sport_management/static/description/icon.png"/>
+        <menuitem name="Sport Management" id="sport_management_menu" web_icon="sport_management,static/description/icon.png"/>
 
         <menuitem name="Account management" id="account_management_top" parent="sport_management_menu" sequence="1"/>
-
         <menuitem name="Account" id="menu_sport_account" parent="account_management_top" action="action_sport_account" sequence="1"/>
         <menuitem name="Type course" id="menu_sport_type" parent="account_management_top" action="action_sport_type" sequence="2"/>
         <menuitem name="Sport cards" id="menu_sport_card" parent="account_management_top" action="action_sport_card" sequence="3"/>
