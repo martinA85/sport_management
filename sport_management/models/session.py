@@ -106,3 +106,10 @@ class Session(models.Model):
     def _compute_max_attendee(self):
         for session in self:
             self.max_attendee = session.course_id.max_attendee
+        
+    @api.onchange('course_id')
+    def _update_session_end_date(self):
+        for session in self:
+            length = datetime.strptime(session.course_id.length, '%H:%M').time()
+            date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
+            session.end_date = date + timedelta(hours=length.hour, seconds=length.second)
