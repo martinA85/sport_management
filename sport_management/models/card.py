@@ -10,7 +10,7 @@ class SportCard(models.Model):
 
     name = fields.Char(string='Name')
     barcode = fields.Char(string='Barcode', copy=False, oldname='ean13')
-    validity = fields.Datetime()
+    validity = fields.Datetime(default=datetime.now() + timedelta(days=365))
     account_id = fields.Many2one('sport.account')
     client_id = fields.Many2one('res.partner')
     credit_count = fields.Integer(compute="_compute_credit_count")

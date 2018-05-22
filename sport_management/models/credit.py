@@ -1,5 +1,7 @@
 from odoo import api, fields, models
 from datetime import datetime
+from datetime import timedelta
+
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -12,8 +14,8 @@ class SportCredit(models.Model):
     client_id = fields.Many2one('res.partner')
     type_id = fields.Many2one('sport.type_course')
     account_id = fields.Many2one('sport.account')
-    date_valid = fields.Datetime()
-    number_actual = fields.Integer(String="Remaining credit")
+    date_valid = fields.Datetime(default=datetime.now() + timedelta(days=365))
+    number_actual = fields.Integer(String="Crédit rstant")
     total = fields.Float(compute='_compute_total')
     quotation_ids = fields.One2many('sale.order', 'credit_id')
     quotation_count = fields.Integer(compute="_compute_quotation_count")
