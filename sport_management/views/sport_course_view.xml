@@ -14,6 +14,7 @@
                                 <field name="len_hours" style="width: 25%" placeholder="HH" />
                                 <field name="len_mins" style="width: 25%" placeholder="MM" />
                             </div>
+                            <field name="length" />
                             <field name="max_attendee" />
                         </group>
                     </sheet>

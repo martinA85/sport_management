@@ -70,7 +70,7 @@ class Session(models.Model):
             if session.course_id.length:
                 length = datetime.strptime(session.course_id.length, '%H:%M').time()
                 date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
-                session.end_date = date + timedelta(hours=length.hour, seconds=length.second)
+                session.end_date = date + timedelta(hours=length.hour, minutes=length.second)
 
     # Print calendar to PDF
     @api.multi
@@ -110,6 +110,8 @@ class Session(models.Model):
     @api.onchange('course_id')
     def _update_session_end_date(self):
         for session in self:
-            length = datetime.strptime(session.course_id.length, '%H:%M').time()
-            date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
-            session.end_date = date + timedelta(hours=length.hour, seconds=length.second)
+            _logger.info(session.course_id.length)
+            if session.course_id.length != False and session.start_date != False:
+                length = datetime.strptime(session.course_id.length, '%H:%M').time()
+                date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
+                session.end_date = date + timedelta(hours=length.hour, seconds=length.second)
