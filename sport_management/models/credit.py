@@ -10,7 +10,7 @@ class SportCredit(models.Model):
     _name = 'sport.credit'
     _description = 'Sport credit'
 
-    name = fields.Char(string='Name')
+    name = fields.Char(string='Name', compute="_compute_credit_name")
     client_id = fields.Many2one('res.partner')
     type_id = fields.Many2one('sport.type_course')
     account_id = fields.Many2one('sport.account')
@@ -23,6 +23,10 @@ class SportCredit(models.Model):
         ('valid', 'Valid'),
         ('invalid', 'Invalid'),
     ], string="Credit status", default="valid")
+
+    @api.multi
+    def _compute_credit_name(self):
+        self.name = self.env['ir.sequence'].next_by_code('sale.order') or _('New')
 
     @api.onchange('quotation_ids')
     def _compute_quotation_count(self):
