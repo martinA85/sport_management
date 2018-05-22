@@ -114,4 +114,5 @@ class Session(models.Model):
             if session.course_id.length != False and session.start_date != False:
                 length = datetime.strptime(session.course_id.length, '%H:%M').time()
                 date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
-                session.end_date = date + timedelta(hours=length.hour, seconds=length.second)
+                _logger.info(length.second)
+                session.end_date = date + timedelta(hours=length.hour, seconds=length.minute*60)
