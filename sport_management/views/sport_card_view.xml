@@ -24,8 +24,6 @@
                             <field name="barcode"/>
                             <field name="account_id"/>
                             <field name="credit_count"/>
-
-                            <button name="scan_card" type="object" class="btn-primary" string="Test SCAN"></button>
                         </group>
                     </sheet>
                 </form>

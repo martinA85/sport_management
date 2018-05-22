@@ -62,7 +62,6 @@ class SportCredit(models.Model):
             vals = {
 
                 'currency_id':self.env.ref('base.main_company').currency_id.id,
-                'name':credit.name,
                 'partner_id':credit.client_id.id,
                 'partner_invoice_id':credit.client_id.id,
                 'partner_shipping_id':credit.client_id.id,

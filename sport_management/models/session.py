@@ -70,7 +70,7 @@ class Session(models.Model):
             if session.course_id.length:
                 length = datetime.strptime(session.course_id.length, '%H:%M').time()
                 date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
-                session.end_date = date + timedelta(hours=length.hour, minutes=length.second)
+                session.end_date = date + timedelta(hours=length.hour, minutes=length.minute)
 
     # Print calendar to PDF
     @api.multi
@@ -115,4 +115,4 @@ class Session(models.Model):
                 length = datetime.strptime(session.course_id.length, '%H:%M').time()
                 date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
                 _logger.info(length.second)
-                session.end_date = date + timedelta(hours=length.hour, seconds=length.minute*60)
+                session.end_date = date + timedelta(hours=length.hour, minutes=length.minute)
