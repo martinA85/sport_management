@@ -12,6 +12,7 @@ class ResPartner(models.Model):
     sub_ids = fields.One2many('sport.subscription','client_id')
     credit_count = fields.Integer(compute="_compute_credit_count")
     card_count = fields.Integer(compute="_compute_card_cout")
+    is_coach = fields.Boolean(default=False)
 
     @api.depends('card_ids')
     def _compute_credit_count(self):

@@ -26,6 +26,10 @@
                         </group>
                     </page>
                 </page>
+
+                <field name="lang" position="after">
+                    <field name="is_coach" />
+                </field>
             </field>
         </record>
 
