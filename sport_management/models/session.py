@@ -116,3 +116,4 @@ class Session(models.Model):
                 date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
                 _logger.info(length.second)
                 session.end_date = date + timedelta(hours=length.hour, minutes=length.minute)
+                _logger.info('aa')
