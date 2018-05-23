@@ -39,16 +39,16 @@ class SportCard(models.Model):
                 _logger.info(date <= hour)
                 if date >= now and date <= hour:
                     if sub.state == "valid":
-                        message = "presence déjà valider"
+                        message = 1
                     else :
                         if card.credit_count > 0:
                             card.account_id.remove_credit()
-                            message = "presence valider"
+                            message = 0
                             sub.state = "valid"
                         else:
-                            message = "plus de session"
+                            message = 2
                 else:
-                    message = "aucune session proche"
+                    message = 3
             return message
                 
                 
