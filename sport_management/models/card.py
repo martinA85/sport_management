@@ -22,9 +22,6 @@ class SportCard(models.Model):
         for card in self:
             card.credit_count = card.account_id.credit_count
 
-    def _scan_card(self):
-        pass
-
     def scan_card(self):
         message = ""
         for card in self:
