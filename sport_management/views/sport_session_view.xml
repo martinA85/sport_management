@@ -8,7 +8,7 @@
                 <calendar date_start="start_date" date_stop="end_date" string="Sport session">
                     <field name="name"/>
                     <field name="coach_id"/>
-                    <field name="course_id"/>
+                    <field name="activity_id"/>
                 </calendar>
             </field>
         </record>
@@ -23,40 +23,6 @@
                 </search>
             </field>
         </record>
-
-        <!-- <record model="ir.ui.view" id="view_session_kanban">-->
-            <!--<field name="name">sport.session.kanban</field>-->
-            <!--<field name="model">sport.type_course</field>-->
-            <!--<field eval="2" name="priority"/>-->
-            <!--<field name="type">kanban</field>-->
-            <!--<field name="arch" type="xml">-->
-                <!--<field name="name" mode="kanban">-->
-                    <!--<kanban default_group_by="type_course.name">-->
-                        <!--<field name="session_ids" />-->
-                        <!--<templates>-->
-                            <!--<t t-name="kanban-box">-->
-                                <!--<div class="oe_resource_vignette">-->
-                                    <!--<div class="oe_resource_image">-->
-                                        <!--<a type="edit">-->
-                                            <!--<img t-att-src="kanban_image('sport.type_course', 'photo', record.id.value)" class="oe_resource_picture"/>-->
-                                        <!--</a>-->
-                                    <!--</div>-->
-                                    <!--<div class="oe_resource_details">-->
-                                        <!--<ul>-->
-                                            <!--<t t-name="kanban-box">-->
-                                                <!--<t t-foreach="session_ids" t-as="session_id">-->
-                                                    <!--<li><t t-esc="session_id.name" /></li>-->
-                                                <!--</t>-->
-                                            <!--</t>-->
-                                        <!--</ul>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</t>-->
-                        <!--</templates>-->
-                    <!--</kanban>-->
-                <!--</field>-->
-            <!--</field>-->
-        <!--</record> -->
 
 
         <!-- sport.session form view -->
@@ -82,7 +48,7 @@
                         </div>
                         <group>
                             <field name="name"/>
-                            <field name="course_id"/>
+                            <field name="activity_id"/>
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="coach_id"  domain="[('is_coach','=', True)]"/>

@@ -1,32 +1,32 @@
 from odoo import api, fields, models
 import logging, json
 
-class Course(models.Model):
-    _name = 'sport.course'
-    _description = 'Sport course'
+class Activity(models.Model):
+    _name = 'sport.activity'
+    _description = 'Sport activity'
 
     name = fields.Char(string='Name')
     length = fields.Char(String="cours length (HH:MM)")
     len_hours = fields.Char(default="00", string="Hours")
     len_mins = fields.Char(string="Min", default='00')
     max_attendee = fields.Integer(String="Maximum attendee number")
-    course_type_id = fields.Many2one('sport.type_course', string="Course Type")
+    course_type_id = fields.Many2one('sport.type_course', string="Type de cours requis")
     color = fields.Char(string="red, green, blue, yellow ...")
-    session_ids = fields.One2many('sport.session', 'course_id')
+    session_ids = fields.One2many('sport.session', 'activity_id')
 
     @api.onchange('len_hours', 'len_mins')
     def update_length(self):
         for record in self:
             self.length = str(self.len_hours) + ":" + str(self.len_mins)
 
-    # Returns all courses
+    # Returns all activities
     @api.model
-    def search_courses(self):
-        course_ids = []
-        for course_id in self.search([]):
+    def search_activities(self):
+        activity_ids = []
+        for activity_id in self.search([]):
             session_ids = []
 
-            for session_id in course_id.session_ids:
+            for session_id in activity_id.session_ids:
                 subscription_ids = []
 
                 for subscription_id in session_id.subscription_ids:
@@ -37,8 +37,8 @@ class Course(models.Model):
                                              })
                 session_ids.append({"id": session_id.id,
                                     "title": session_id.name,
-                                    "course_id": session_id.course_id.id,
-                                    "course_name": session_id.course_id.name,
+                                    "activity_id": session_id.activity_id.id,
+                                    "activity_name": session_id.activity_id.name,
                                     "start": session_id.start_date,
                                     "end": session_id.end_date,
                                     "color": session_id.color,
@@ -46,16 +46,16 @@ class Course(models.Model):
                                     "subscription_ids": subscription_ids
                                     })
 
-            course_ids.append({
-                "id": course_id.id,
-                "name": course_id.name,
-                "length": course_id.length,
-                "max_attendee": course_id.max_attendee,
-                "course_type_id": course_id.course_type_id.id,
-                "course_type_name": course_id.course_type_id.name,
-                "course_type_price": course_id.course_type_id.price,
+            activity_ids.append({
+                "id": activity_id.id,
+                "name": activity_id.name,
+                "length": activity_id.length,
+                "max_attendee": activity_id.max_attendee,
+                "activity_type_id": activity_id.activity_type_id.id,
+                "activity_type_name": activity_id.activity_type_id.name,
+                "activity_type_price": activity_id.activity_type_id.price,
                 "session_ids": session_ids
             })
 
-        return json.dumps(course_ids)
-        # return course_ids
+        return json.dumps(activity_ids)
+        # return activity_ids
