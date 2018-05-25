@@ -14,6 +14,9 @@ class Subscription(models.Model):
     client_id = fields.Many2one('res.partner')
     session_id = fields.Many2one('sport.session')
     sub_date = fields.Datetime(default=datetime.today())
+    currency_id = fields.Many2one('res.currency', string='Currency')
+    unit_price = fields.Monetary(digits=2, currency_field='currency_id', string="Prix de la séance")
+    scan_date = fields.Datetime(sting="Date de validation de la séance")
     state = fields.Selection([
         ('sub', 'Sub'),
         ('valid', 'Valid'),
