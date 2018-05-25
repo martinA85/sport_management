@@ -16,6 +16,7 @@
                             </div>
                             <field name="length" />
                             <field name="max_attendee" />
+                            <field name="course_type_id" />
                         </group>
                     </sheet>
                 </form>
