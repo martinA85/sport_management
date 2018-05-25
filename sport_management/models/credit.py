@@ -21,7 +21,7 @@ class SportCredit(models.Model):
     quotation_count = fields.Integer(compute="_compute_quotation_count")
     date_buy = fields.Datetime(default=datetime.now(), string="Date d'achat")
     qty_buy = fields.Integer(string="Quantité initial")
-    product_id = fields.Many2one('product.tempate', string="Carte")
+    product_id = fields.Many2one('product.template', string="Carte")
     status = fields.Selection([
         ('valid', 'Valid'),
         ('invalid', 'Invalid'),

@@ -55,6 +55,10 @@ class SportBadge(models.Model):
                             credit_id.number_actual = credit_id.number_actual - 1
                             message = 0
                             sub.state = "valid"
+                            sub.scan_date = datetime.now()
+                            sub.badge_id = badge
+                            sub.unit_price = credit_id.product_id.lst_price / credit_id.product_id.qty_course
+                            _logger.info(sub.unit_price)
                 else:
                     message = 3
             _logger.info(message)

@@ -24,6 +24,7 @@
                             <field name="number_actual" />
                             <field name="date_valid" />
                             <field name="client_id" />
+                            <field name="product_id" />
                         </group>
                     </sheet>
                 </form>

@@ -10,6 +10,7 @@ class Activity(models.Model):
     len_hours = fields.Char(default="00", string="Hours")
     len_mins = fields.Char(string="Min", default='00')
     max_attendee = fields.Integer(String="Maximum attendee number")
+    min_attendee = fields.Integer(String="Minimum attendee number")
     course_type_id = fields.Many2one('sport.type_course', string="Type de cours requis")
     color = fields.Char(string="red, green, blue, yellow ...")
     session_ids = fields.One2many('sport.session', 'activity_id')
