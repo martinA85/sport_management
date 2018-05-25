@@ -17,6 +17,7 @@ class Subscription(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency')
     unit_price = fields.Monetary(digits=2, currency_field='currency_id', string="Prix de la séance")
     scan_date = fields.Datetime(sting="Date de validation de la séance")
+    badge_id = fields.Many2one('sport.badge')
     state = fields.Selection([
         ('sub', 'Sub'),
         ('valid', 'Valid'),

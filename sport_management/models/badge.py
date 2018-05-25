@@ -14,6 +14,7 @@ class SportBadge(models.Model):
     account_id = fields.Many2one('sport.account')
     client_id = fields.Many2one('res.partner')
     credit_count = fields.Integer(compute="_compute_credit_count")
+    subscription_ids = fields.One2many('sport.subscription', 'badge_id')
 
 
     @api.depends('account_id')
