@@ -19,6 +19,9 @@ class SportCredit(models.Model):
     total = fields.Float(compute='_compute_total')
     quotation_ids = fields.One2many('sale.order', 'credit_id')
     quotation_count = fields.Integer(compute="_compute_quotation_count")
+    date_buy = fields.Datetime(default=datetime.now(), string="Date d'achat")
+    qty_buy = fields.Integer(string="Quantité initial")
+    product_id = fields.Many2one('product.tempate', string="Carte")
     status = fields.Selection([
         ('valid', 'Valid'),
         ('invalid', 'Invalid'),
