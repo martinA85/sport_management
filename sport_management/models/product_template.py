@@ -7,6 +7,6 @@ _logger = logging.getLogger(__name__)
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    is_card = fields.Boolean(default=False)
+    is_card = fields.Boolean(default=False, string="Est une carte")
     qty_course = fields.Integer()
     course_type_id = fields.Many2one('sport.type_course', string="Type de cours")
