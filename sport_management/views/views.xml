@@ -30,7 +30,6 @@
             <field name="name">session</field>
             <field name="res_model">sport.session</field>
             <field name="view_mode">calendar,tree,form</field>
-            <field name="view_id" ref="sport_management.view_session_calendar"/>
         </record>
 
         <record model="ir.actions.act_window" id="action_sport_session_calendar">
