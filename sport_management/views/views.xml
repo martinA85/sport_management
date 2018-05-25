@@ -12,9 +12,9 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <record model="ir.actions.act_window" id="action_sport_card">
-            <field name="name">sport cards</field>
-            <field name="res_model">sport.sport_card</field>
+        <record model="ir.actions.act_window" id="action_sport_badge">
+            <field name="name">sport badges</field>
+            <field name="res_model">sport.badge</field>
             <field name="view_mode">tree,form</field>
         </record>
 
@@ -81,9 +81,9 @@
         </record>
 
 
-        <record model="ir.actions.act_window" id="action_card_list">
-            <field name="name">cards</field>
-            <field name="res_model">sport.sport_card</field>
+        <record model="ir.actions.act_window" id="action_badge_list">
+            <field name="name">badges</field>
+            <field name="res_model">sport.badge</field>
             <field name="context">{'search_default_account_id': [active_id]}</field>
             <field name="view_mode">tree,form</field>
         </record>
@@ -123,7 +123,7 @@
         <menuitem name="Account management" id="account_management_top" parent="sport_management_menu" sequence="1"/>
         <menuitem name="Account" id="menu_sport_account" parent="account_management_top" action="action_sport_account" sequence="1"/>
         <menuitem name="Type course" id="menu_sport_type" parent="account_management_top" action="action_sport_type" sequence="2"/>
-        <menuitem name="Sport cards" id="menu_sport_card" parent="account_management_top" action="action_sport_card" sequence="3"/>
+        <menuitem name="Sport badges" id="menu_sport_badge" parent="account_management_top" action="action_sport_badge" sequence="3"/>
 
         <menuitem name="Session management" id="session_management_top" parent="sport_management_menu" sequence="2"/>
         <menuitem name="Course" id="menu_sport_course" parent="session_management_top" action="action_sport_course" sequence="1"/>

@@ -35,7 +35,7 @@
             <field name="name">sport.credit.view.search</field>
             <field name="model">sport.credit</field>
             <field name="arch" type="xml">
-                <search string="Search cards">
+                <search string="Search credit">
                     <field name="account_id" operator="=" />
                     <field name="client_id" operator="=" />
                 </search>

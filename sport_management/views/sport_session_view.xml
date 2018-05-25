@@ -14,11 +14,11 @@
         </record>
 
         <!-- sport.session seach view -->
-        <record id="sport_card_view_search" model="ir.ui.view">
-            <field name="name">sport.card.view.search</field>
-            <field name="model">sport.sport_card</field>
+        <record id="sport_badge_view_search" model="ir.ui.view">
+            <field name="name">sport.badge.view.search</field>
+            <field name="model">sport.badge</field>
             <field name="arch" type="xml">
-                <search string="Search cards">
+                <search string="Search badges">
                     <field name="account_id" operator="=" />
                 </search>
             </field>

@@ -1,19 +1,19 @@
 <odoo>
     <data>
-        <!-- sport.card seach view -->
-        <record id="sport_card_view_search" model="ir.ui.view">
-            <field name="name">sport.card.view.search</field>
-            <field name="model">sport.sport_card</field>
+        <!-- sport.badge seach view -->
+        <record id="sport_badge_view_search" model="ir.ui.view">
+            <field name="name">sport.badge.view.search</field>
+            <field name="model">sport.badge</field>
             <field name="arch" type="xml">
-                <search string="Search cards">
+                <search string="Search badges">
                     <field name="account_id" operator="=" />
                 </search>
             </field>
         </record>
 
-        <record id="sport_card_view_form" model="ir.ui.view">
-            <field name="name">sport.card.view.form</field>
-            <field name="model">sport.sport_card</field>
+        <record id="sport_badge_view_form" model="ir.ui.view">
+            <field name="name">sport.badge.view.form</field>
+            <field name="model">sport.badge</field>
             <field name="arch" type="xml">
                 <form string="">
                     <sheet>
