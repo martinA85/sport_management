@@ -13,15 +13,8 @@ class SportBadge(models.Model):
     validity = fields.Datetime(default=datetime.now() + timedelta(days=365))
     account_id = fields.Many2one('sport.account')
     client_id = fields.Many2one('res.partner')
-    credit_count = fields.Integer(compute="_compute_credit_count")
     subscription_ids = fields.One2many('sport.subscription', 'badge_id')
 
-
-    @api.depends('account_id')
-    @api.onchange('account_id')
-    def _compute_credit_count(self):
-        for badge in self:
-            badge.credit_count = badge.account_id.credit_count
 
     #return integer as message :
     #0 : sub valided
@@ -63,5 +56,3 @@ class SportBadge(models.Model):
                     message = 3
             _logger.info(message)
             return message
-                
-                

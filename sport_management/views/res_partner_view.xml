@@ -20,7 +20,6 @@
                                 <tree editable="bottom">
                                     <field name="name" />
                                     <field name="barcode" />
-                                    <field name="credit_count" />
                                 </tree>
                             </field>
                         </group>

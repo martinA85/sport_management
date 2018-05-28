@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 import logging
 
 
@@ -23,11 +24,10 @@ class ResPartner(models.Model):
                 _logger.info(badge.credit_count)
                 partner.credit_count += badge.credit_count
 
-    
+
     @api.depends('badge_ids')
     def _compute_badge_count(self):
         for partner in self:
             partner.badge_count = 0
             for badge in partner.badge_ids:
                 partner.badge_count += 1
-

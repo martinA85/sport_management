@@ -23,7 +23,6 @@
                             <field name="client_id"/>
                             <field name="barcode"/>
                             <field name="account_id"/>
-                            <field name="credit_count"/>
                             <button name="scan_card" type="object" >TEST SCAN</button>
                         </group>
                     </sheet>
