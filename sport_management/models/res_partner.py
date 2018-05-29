@@ -11,19 +11,15 @@ class ResPartner(models.Model):
     credit_ids = fields.One2many('sport.credit', 'client_id')
     badge_ids = fields.One2many('sport.badge','client_id')
     sub_ids = fields.One2many('sport.subscription','client_id')
-    credit_count = fields.Integer(compute="_compute_credit_count")
-    badge_count = fields.Integer(compute="_compute_badge_cout")
-    #is_coach = fields.Boolean(default=False)
+    badge_count = fields.Integer(compute="_compute_badge_count")
+    is_coach = fields.Boolean(default=False)
+    account_id = fields.Many2one('sport.account', string="Compte", compute='_compute_account_id')
 
     @api.depends('badge_ids')
-    def _compute_credit_count(self):
-        _logger.info('COMPUTE CREDIT COUNT PARTNER')
+    def _compute_account_id(self):
         for partner in self:
-            partner.credit_count = 0
             for badge in partner.badge_ids:
-                _logger.info(badge.credit_count)
-                partner.credit_count += badge.credit_count
-
+                partner.account_id = badge.account_id
 
     @api.depends('badge_ids')
     def _compute_badge_count(self):

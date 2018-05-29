@@ -21,6 +21,8 @@
                         <group>
                             <field name="name"/>
                             <field name="date_create" />
+                            <field name="owner_id" />
+                            <field name="badge_ids" />
                         </group>
                     </sheet>
                 </form>

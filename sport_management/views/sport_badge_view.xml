@@ -23,6 +23,12 @@
                             <field name="client_id"/>
                             <field name="barcode"/>
                             <field name="account_id"/>
+                            <field name="subscription_ids">
+                                <tree string="Historique">
+                                    <field name="scan_date" />
+                                    <field name="unit_price" />
+                                </tree>
+                            </field>
                             <button name="scan_card" type="object" >TEST SCAN</button>
                         </group>
                     </sheet>

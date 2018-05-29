@@ -14,12 +14,9 @@ class SportAccount(models.Model):
     credit_count = fields.Integer(compute="_compute_credit_count")
     badge_count = fields.Integer(compute="_compute_badge_count")
     active = fields.Boolean(default=True)
-    partner_id = fields.Many2one(comodel_name='res.partner', string='Account owner', required=False)
+    owner_id = fields.Many2one('res.partner', string="Owner")
+    member_ids = fields.One2many('res.partner', 'account_id')
     
-
-    def _add_credit(self):
-        pass
-
     def remove_credit(self):
         for account in self:
             index = 0
@@ -28,7 +25,6 @@ class SportAccount(models.Model):
                 account.credit_ids[index].number_actual = account.credit_ids[index].number_actual - 1
             else:
                 index = index + 1
-
 
     @api.depends('credit_ids')
     def _compute_credit_count(self):

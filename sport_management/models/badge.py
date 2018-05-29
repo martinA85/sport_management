@@ -14,8 +14,7 @@ class SportBadge(models.Model):
     account_id = fields.Many2one('sport.account')
     client_id = fields.Many2one('res.partner')
     subscription_ids = fields.One2many('sport.subscription', 'badge_id')
-
-
+    
     #return integer as message :
     #0 : sub valided
     #1 : sub already valided
