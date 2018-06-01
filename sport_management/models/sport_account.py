@@ -31,12 +31,13 @@ class SportAccount(models.Model):
     def _compute_credit_count(self):
         for account in self:
             _logger.info("_compute_credit_count")
+            account._check_credit_state()
             account.credit_count = 0
             for credit in account.credit_ids:
                 if credit.status == "valid":
                     account.credit_count += credit.number_actual
 
-    @api.onchange('credit_ids')
+    @api.depends('credit_count')
     def _check_credit_state(self):
         _logger.info("_check_credit_state")
         for account in self:
