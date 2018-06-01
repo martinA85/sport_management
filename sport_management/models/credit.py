@@ -69,3 +69,15 @@ class SportCredit(models.Model):
                 credit.status = "invalid"
             else:
                 credit.status = "valid"
+
+    def check_state(self):
+        _logger.info("JE SUIS LAAAAAAAAAAAA")
+        account = self.account_id
+        for credit in account.credit_ids:
+                states = self.env['sport.state'].search([['type_id','=',credit.type_id.id],['account_id','=',account.id]])
+                if not states:
+                    vals = {
+                        'type_id' : credit.type_id.id,
+                        'account_id' : account.id
+                    }
+                    self.env['sport.state'].create(vals)
