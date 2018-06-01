@@ -24,6 +24,7 @@ class Session(models.Model):
     day = fields.Char(String="Days", compute="_compute_session_day")
     color = fields.Char(compute="_compute_color")
     max_attendee = fields.Integer(String="Maximum attendee number", compute="_compute_max_attendee")
+    remaining_places = fields.Integer(String="Place restante", compute="_compute_remaining_places")
 
     @api.depends('subscription_ids')
     def _compute_attendee_count(self):
@@ -117,3 +118,7 @@ class Session(models.Model):
                 _logger.info(length.second)
                 session.end_date = date + timedelta(hours=length.hour, minutes=length.minute)
                 _logger.info('aa')
+
+    def _compute_remaining_places(self):
+        for session in self:
+            session.remaining_places = session.activity_id.max_attendee - session.attendee_count

@@ -18,6 +18,7 @@
                             <field name="max_attendee" />
                             <field name="min_attendee" />
                             <field name="course_type_id" />
+                            <field name="color" />
                         </group>
                     </sheet>
                 </form>

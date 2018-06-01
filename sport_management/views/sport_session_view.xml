@@ -5,10 +5,11 @@
             <field name="model">sport.session</field>
             <field eval="1" name="priority"/>
             <field name="arch" type="xml">
-                <calendar date_start="start_date" date_stop="end_date" string="Sport session">
+                <calendar date_start="start_date" date_stop="end_date" string="Sport session" color="activity_id">
                     <field name="name"/>
                     <field name="coach_id"/>
                     <field name="activity_id"/>
+                    <field write_field="remaining_places" name="remaining_places"/>
                 </calendar>
             </field>
         </record>

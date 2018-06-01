@@ -8,3 +8,4 @@ class TypeCourse(models.Model):
     name = fields.Char(string='Name')
     activity_ids = fields.One2many('sport.activity','course_type_id')
     session_ids = fields.Many2many('sport.session', 'course', 'session_ids')
+    color = fields.Char(default="blue")
