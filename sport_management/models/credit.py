@@ -19,6 +19,7 @@ class SportCredit(models.Model):
     date_buy = fields.Datetime(default=datetime.now(), string="Date d'achat")
     qty_buy = fields.Integer(string="Quantité initial")
     product_id = fields.Many2one('product.template', string="Carte")
+    remaining_value = fields.Integer(string="Valeur restante sur la carte", compute="_compute_remaining_value")
     status = fields.Selection([
         ('valid', 'Valid'),
         ('invalid', 'Invalid'),
@@ -70,14 +71,10 @@ class SportCredit(models.Model):
             else:
                 credit.status = "valid"
 
-    def check_state(self):
-        _logger.info("JE SUIS LAAAAAAAAAAAA")
-        account = self.account_id
-        for credit in account.credit_ids:
-                states = self.env['sport.state'].search([['type_id','=',credit.type_id.id],['account_id','=',account.id]])
-                if not states:
-                    vals = {
-                        'type_id' : credit.type_id.id,
-                        'account_id' : account.id
-                    }
-                    self.env['sport.state'].create(vals)
+    def _compute_remaining_value(self):
+        for credit in self:
+            card = credit.product_id
+            unit_price = card.lst_price / card.qty_course
+            credit.remaining_value = card.lst_price - (unit_price * (card.qty_course - credit.number_actual))
+
+    

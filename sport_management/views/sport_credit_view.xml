@@ -19,6 +19,7 @@
                             <field name="date_valid" />
                             <field name="client_id" />
                             <field name="product_id" />
+                            <field name="remaining_value" />
                         </group>
                     </sheet>
                 </form>
