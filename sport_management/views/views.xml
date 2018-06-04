@@ -30,6 +30,18 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+        <record model="ir.actions.act_window" id="action_sport_planning_tmpl">
+            <field name="name">Template de planning</field>
+            <field name="res_model">sport.planning_tmpl</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sport_session_tmpl">
+            <field name="name">Template de session</field>
+            <field name="res_model">sport.session_tmpl</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
         <!-- calendar session action -->
 
         <record id="action_sport_session" model="ir.actions.act_window">
@@ -69,6 +81,7 @@
             <field name="sequence" eval="3"/>
             <field name="view_mode">form</field>
         </record>
+        
 
         <!-- list action -->
 
@@ -136,24 +149,11 @@
         <menuitem name="Activitées" id="menu_sport_activity" parent="session_management_top" action="action_sport_activity" sequence="1"/>
         <menuitem name="Session" id="menu_sport_session" parent="session_management_top" action="action_sport_session" sequence="2"/>
 
+        <menuitem name="Planning" id="planning_management_top" parent="sport_management_menu" sequence="3"/>
+        <menuitem name="Planning template" id="menu_planning_tmpl" parent="planning_management_top" action="action_sport_planning_tmpl" sequence="1"/>
+        <menuitem name="Session template" id="menu_session_tmpl" parent="planning_management_top" action="action_sport_session_tmpl" sequence="2"/>
+
         <!-- website menu -->
-
-
-        <!-- server action -->
-        <!-- <record id="sport_on_create_credit_server_action" model="ir.actions.server">
-            <field name="name">check state</field>
-            <field name="model_id" ref="sport_management.model_sport_credit" />
-            <field name="state">code</field>
-            <field name="kind">on_create</field>
-            <field name="code">model.check_state()</field>
-        </record>
-
-        <record id="automated_sport_on_create_credit_server_action" model="base.action.rule">
-            <field name="name">Automated check state</field>
-            <field name="model_id" ref="sport_management.model_sport_credit"/>
-            <field name="kind">on_write</field>
-            <field name="server_action_ids" eval="[(6,0,[ref('sport_on_create_credit_server_action')])]"/>
-        </record> -->
 
     </data>
 </odoo>

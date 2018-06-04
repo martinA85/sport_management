@@ -19,6 +19,7 @@
                             <field name="min_attendee" />
                             <field name="course_type_id" />
                             <field name="color" />
+                            <field name="room" />
                         </group>
                     </sheet>
                 </form>

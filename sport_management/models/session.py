@@ -25,6 +25,16 @@ class Session(models.Model):
     color = fields.Char(compute="_compute_color")
     max_attendee = fields.Integer(String="Maximum attendee number", compute="_compute_max_attendee")
     remaining_places = fields.Integer(String="Place restante", compute="_compute_remaining_places")
+    room = fields.Selection(string='Lieux', required=False,
+                             selection=[('sport', 'Salle Sport'), ('pool', 'Piscine'), ('cardio', 'Salle Cardio')])
+
+    @api.onchange('activity_id')
+    def set_room(self):
+        _logger.info("change_room")
+        for session in self:
+            _logger.info(session.activity_id.room)
+            session.room = session.activity_id.room
+            _logger.info(session.room)
 
     @api.depends('subscription_ids')
     def _compute_attendee_count(self):

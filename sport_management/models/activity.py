@@ -14,6 +14,8 @@ class Activity(models.Model):
     course_type_id = fields.Many2one('sport.type_course', string="Type de cours requis")
     color = fields.Char(string="red, green, blue, yellow ...")
     session_ids = fields.One2many('sport.session', 'activity_id')
+    room = fields.Selection(string='state', required=False,
+                             selection=[('sport', 'Salle Sport'), ('pool', 'Piscine'), ('cardio', 'Salle Cardio')], default="sport")
 
     @api.onchange('len_hours', 'len_mins')
     def update_length(self):
