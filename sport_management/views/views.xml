@@ -151,6 +151,13 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+        <record model="ir.actions.act_window" id="action_subscription_partner_list">
+            <field name="name">Inscription</field>
+            <field name="res_model">sport.subscription</field>
+            <field name="context">{'search_default_client_id': [active_id]}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
         <!-- menu item -->
 
         <menuitem name="Sport Management" id="sport_management_menu" web_icon="sport_management,static/description/icon.png"/>

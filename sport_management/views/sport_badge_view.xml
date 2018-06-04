@@ -25,6 +25,7 @@
                             <field name="account_id"/>
                             <field name="subscription_ids">
                                 <tree string="Historique">
+                                    <field name="session_id" />
                                     <field name="scan_date" />
                                     <field name="unit_price" />
                                 </tree>
