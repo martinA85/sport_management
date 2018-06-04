@@ -42,6 +42,8 @@
         'views/sport_course_view.xml',
         'views/sport_credit_type_view.xml',
         'views/product_template_view.xml',
+        'views/planning_tmpl_view.xml',
+        #'views/session_tmpl.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

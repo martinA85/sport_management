@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+
+        <!-- sport.planning_tmpl form view -->
+        <record id="sport_planning_tmpl_view_form" model="ir.ui.view">
+            <field name="name">sport.planning_tmpl.view.form</field>
+            <field name="model">sport.planning_tmpl</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="session_tmpl_ids" />
+                            <button name="generate_planning" type="object" class="btn-primary" string="Generate Planning"></button>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

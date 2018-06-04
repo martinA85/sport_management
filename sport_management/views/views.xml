@@ -81,6 +81,22 @@
             <field name="sequence" eval="3"/>
             <field name="view_mode">form</field>
         </record>
+
+        <!-- <record id="action_view_kanban_event_tree" model="ir.actions.act_window.view">
+            <field name="name">session</field>
+            <field name="res_model">sport.session</field>
+            <field name="act_window_id" ref="action_sport_session"/>
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">kanban</field>
+        </record> -->
+
+        <record id="action_view_calendar_event_form" model="ir.actions.act_window.view">
+            <field name="name">session</field>
+            <field name="res_model">sport.session</field>
+            <field name="act_window_id" ref="action_sport_session"/>
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+        </record>
         
 
         <!-- list action -->

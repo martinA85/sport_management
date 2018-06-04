@@ -28,6 +28,10 @@ class Session(models.Model):
     room = fields.Selection(string='Lieux', required=False,
                              selection=[('sport', 'Salle Sport'), ('pool', 'Piscine'), ('cardio', 'Salle Cardio')])
 
+    _sql_constraints = [
+        ('session_per_day', 'unique(room, start_date)', 'this session already exist')
+    ]
+
     @api.onchange('activity_id')
     def set_room(self):
         _logger.info("change_room")
