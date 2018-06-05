@@ -35,7 +35,7 @@ class PlanningTmpl(models.Model):
                 start_date = day_date.replace(hour=hour_session.hour, minute=hour_session.minute, second=0, microsecond=0)
                 _logger.info(start_date)
                 vals = {
-                    "name" : session.activity_id.name,
+                    "name" : session.activity_id.name + " " + start_date.strftime("%Y-%m-%d %H:%M:%S") ,
                     "activity_id" : session.activity_id.id,
                     "start_date" : start_date,
                     "room" : session.room,
@@ -44,5 +44,5 @@ class PlanningTmpl(models.Model):
                 try:
                     new_session = self.env["sport.session"].create(vals)
                 except Exception:
-                    _logging.info("error")
+                    _logger.info("error")
                 new_session._compute_end_date()

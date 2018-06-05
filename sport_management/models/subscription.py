@@ -63,6 +63,9 @@ class Subscription(models.Model):
         ])
 
         for subscription_id in subscription_ids:
+            _logger.info(subscription_id)
+            _logger.info(self.session_id.start_date)
+            _logger.info(subscription_id.session_id.end_date)
             if self.session_id.start_date <= subscription_id.session_id.end_date and \
                     self.session_id.end_date >= subscription_id.session_id.start_date:
                 raise ValidationError(_('This customer already have session at this moment.'))

@@ -55,7 +55,7 @@ class SportCredit(models.Model):
     @api.multi
     def invalid_expire_credit(self):
         expire = datetime.now() + timedelta(days=365)
-        credits = self.env['sport.credit'].search([('status','=','valid'),('date_valid','>',now.strftime("%Y-%m-%d %H:%M:%S"))])
+        credits = self.env['sport.credit'].search([('status','=','valid'),('date_valid','>',datetime.now().strftime("%Y-%m-%d %H:%M:%S"))])
         for credit in credits:
             _logger.info("CREDIT : " + credit.name)
             credit.status = "invalid"
