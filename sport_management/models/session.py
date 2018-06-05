@@ -121,14 +121,32 @@ class Session(models.Model):
     @api.onchange('activity_id')
     def _update_session_end_date(self):
         for session in self:
-            _logger.info(session.activity_id.length)
             if session.activity_id.length != False and session.start_date != False:
                 length = datetime.strptime(session.activity_id.length, '%H:%M').time()
                 date = datetime.strptime(session.start_date, '%Y-%m-%d %H:%M:%S')
-                _logger.info(length.second)
                 session.end_date = date + timedelta(hours=length.hour, minutes=length.minute)
-                _logger.info('aa')
 
     def _compute_remaining_places(self):
         for session in self:
             session.remaining_places = session.activity_id.max_attendee - session.attendee_count
+
+    #called by cron, look for evry session started 1hour ago and set absent evry one who was not there
+    def update_absent_credit_count(self):
+        _logger.info("update_absent_credit_count")
+        now = datetime.now()
+        #our time minus 1 hour
+        now_minus_1 = now + timedelta(hours=-1)
+        _logger.info(now_minus_1)
+        #getting all session statrted 1hour ago
+        sessions = self.env['sport.session'].search([('start_date', '<', now.strftime("%Y-%m-%d %H:%M:%S")),('start_date','>', now_minus_1.strftime("%Y-%m-%d %H:%M:%S"))])
+        for session in sessions:
+            #getting evry subscription of this session with status 'sub'
+            absent_ids = self.env['sport.subscription'].search([('session_id','=',session.id),('state','=','sub')])
+            for absent in absent_ids:
+                #updating status
+                absent.state = "absent"
+                #getting the older credit
+                credit_id = self.env['sport.credit'].search([('account_id', '=', absent.client_id.account_id.id),('type_id','=',session.activity_id.course_type_id.id),('number_actual','>', 0)], order='date_buy asc',limit=1)
+                credit_id.number_actual = credit_id.number_actual - 1
+                absent.scan_date = datetime.now()
+                absent.unit_price = credit_id.product_id.lst_price / credit_id.product_id.qty_course

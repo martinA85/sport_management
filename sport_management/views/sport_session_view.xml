@@ -55,6 +55,7 @@
                             <field name="coach_id"  domain="[('is_coach','=', True)]"/>
                             <field name="max_attendee" />
                             <field name="room"/>
+                            <button name="update_absent_credit_count" type="object">Test cron</button>
                         </group>
                     </sheet>
                 </form>
