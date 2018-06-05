@@ -41,5 +41,8 @@ class PlanningTmpl(models.Model):
                     "room" : session.room,
                     "coach_id" : session.coach_id.id,
                 }
-                new_session = self.env["sport.session"].create(vals)
+                try:
+                    new_session = self.env["sport.session"].create(vals)
+                except Exception:
+                    _logging.info("error")
                 new_session._compute_end_date()

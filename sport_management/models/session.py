@@ -154,7 +154,6 @@ class Session(models.Model):
         now = datetime.now()
         #our time minus 1 hour
         now_minus_1 = now + timedelta(hours=-1)
-        _logger.info(now_minus_1)
         #getting all session statrted 1hour ago
         sessions = self.env['sport.session'].search([('start_date', '<', now.strftime("%Y-%m-%d %H:%M:%S")),('start_date','>', now_minus_1.strftime("%Y-%m-%d %H:%M:%S"))])
         for session in sessions:
@@ -166,6 +165,7 @@ class Session(models.Model):
                 #getting the older credit
                 credit_id = self.env['sport.credit'].search([('account_id', '=', absent.client_id.account_id.id),('type_id','=',session.activity_id.course_type_id.id),('number_actual','>', 0)], order='date_buy asc',limit=1)
                 credit_id.number_actual = credit_id.number_actual - 1
+                #updaging subscription information
                 absent.scan_date = datetime.now()
                 absent.unit_price = credit_id.product_id.lst_price / credit_id.product_id.qty_course
                 absent.badge_id = absent.client_id.badge_id
