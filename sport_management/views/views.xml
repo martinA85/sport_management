@@ -151,6 +151,20 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+        <record model="ir.actions.act_window" id="action_session_a_list">
+            <field name="name">Absent subs</field>
+            <field name="res_model">sport.subscription</field>
+            <field name="context">{'search_default_session_id': [active_id], 'search_default_state':'absent'}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_session_v_list">
+            <field name="name">Valid subs</field>
+            <field name="res_model">sport.subscription</field>
+            <field name="context">{'search_default_session_id': [active_id], 'search_default_state':'valid'}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
         <record model="ir.actions.act_window" id="action_subscription_partner_list">
             <field name="name">Inscription</field>
             <field name="res_model">sport.subscription</field>

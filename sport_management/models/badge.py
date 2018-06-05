@@ -27,7 +27,7 @@ class SportBadge(models.Model):
             client = badge.client_id
             account = badge.account_id
             now = datetime.now()
-            hour = now /+ timedelta(hours=1)
+            hour = now + timedelta(hours=1)
             # hour = now + stimedelta(hours=24)
             lst_subscriptions = client.sub_ids
             type_id = None

@@ -33,6 +33,14 @@
                 <form string="">
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="%(action_session_a_list)d" type="action"
+                                    icon="fa-times-circle">
+                                <field string="Absend" name="absent_attendee_count" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" name="%(action_session_v_list)d" type="action"
+                                    icon="fa-check-square">
+                                <field string="Valid" name="valid_attendee_count" widget="statinfo"/>
+                            </button>
                             <button class="oe_stat_button" name="%(action_session_s_list)d" type="action"
                                     icon="fa-user-circle">
                                 <field string="Subscribers" name="attendee_count" widget="statinfo" />

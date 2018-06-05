@@ -19,6 +19,8 @@ class Session(models.Model):
     waiting_attendee_count = fields.Integer(String="Waiting attendee count", compute="_compute_waiting_attendee_count")
     canceled_attendee_count = fields.Integer(String="Canceled attendee count",
                                              compute="_compute_canceled_attendee_count")
+    valid_attendee_count = fields.Integer(String="Waiting attendee count", compute="_compute_valid_attendee_count")
+    absent_attendee_count = fields.Integer(String="Waiting attendee count", compute="_compute_absent_attendee_count")
     state = fields.Selection(string='state', required=False,
                              selection=[('done', 'Done'), ('cancel', 'Canceled'), ('valid', 'Valid')], default="valid")
     day = fields.Char(String="Days", compute="_compute_session_day")
@@ -50,6 +52,22 @@ class Session(models.Model):
             session.waiting_attendee_count = 0
             for sub in session.subscription_ids:
                 if sub.state == 'waiting':
+                    session.waiting_attendee_count += 1
+    
+    @api.depends('subscription_ids')
+    def _compute_valid_attendee_count(self):
+        for session in self:
+            session.waiting_attendee_count = 0
+            for sub in session.subscription_ids:
+                if sub.state == 'valid':
+                    session.waiting_attendee_count += 1
+    
+    @api.depends('subscription_ids')
+    def _compute_absent_attendee_count(self):
+        for session in self:
+            session.waiting_attendee_count = 0
+            for sub in session.subscription_ids:
+                if sub.state == 'absent':
                     session.waiting_attendee_count += 1
 
     @api.depends('subscription_ids')
@@ -150,3 +168,4 @@ class Session(models.Model):
                 credit_id.number_actual = credit_id.number_actual - 1
                 absent.scan_date = datetime.now()
                 absent.unit_price = credit_id.product_id.lst_price / credit_id.product_id.qty_course
+                absent.badge_id = absent.client_id.badge_id
